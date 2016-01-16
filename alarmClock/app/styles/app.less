@@ -1,0 +1,72 @@
+@white: #fff;
+@gray-darkest: #1F1F1F;
+@black: #000;
+@red: #BD2121;
+
+body, h1, h2, p {
+    color: @red;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 0px 0px 15px @red;
+    line-height: 100%;
+    margin: 0;
+}
+
+.background {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background-color: @black;
+    z-index:-1;
+
+    svg {
+        position:absolute;
+        width: 200vw;
+        left: -100%;
+        top: -55%;
+        animation-name: spin;
+        animation-duration: 220s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+    path {
+        fill: @gray-darkest;
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {transform: rotateZ(0deg);}
+    25% {transform: rotateZ(90deg);}
+    50% {transform: rotateZ(180deg);}
+    75% {transform: rotateZ(270deg);}
+    100% {transform: rotateZ(360deg);}
+}
+@keyframes spin {
+    0% {transform: rotateZ(0deg);}
+    25% {transform: rotateZ(90deg);}
+    50% {transform: rotateZ(180deg);}
+    75% {transform: rotateZ(270deg);}
+    100% {transform: rotateZ(360deg);}
+}
+
+.clock {
+    text-align:center;
+    position:absolute;
+    top:50%;
+    width: 100%;
+    margin-top: -16vw;
+
+    h1 {
+        font-weight: 300;
+        font-size: 25vw;
+
+        small {
+            font-size: 10vw;
+            line-height: 10vw;
+        }
+    }
+    h2 {
+        font-size: 3vw;
+    }
+}

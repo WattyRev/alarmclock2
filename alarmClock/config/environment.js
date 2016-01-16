@@ -2,6 +2,10 @@
 
 module.exports = function(environment) {
   var ENV = {
+    contentSecurityPolicy: {
+        'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+        'font-src': "'self' https://fonts.gstatic.com"
+    },
     modulePrefix: 'alarm-clock',
     environment: environment,
     baseURL: '/',
