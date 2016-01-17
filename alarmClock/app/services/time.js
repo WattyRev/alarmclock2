@@ -48,15 +48,20 @@ export default Ember.Service.extend({
         'December'
     ],
 
-    setTimer() {
+    setTimer(seconds) {
         let self = this;
         Ember.run.later(function() {
             self.setTime();
-        }, 1000);
+        }, seconds * 1000);
     },
 
     setTime: function() {
+        let past = this.get('now').getMinutes();
         this.set('now', new Date());
-        this.setTimer();
+        let now = this.get('now').getMinutes();
+        if (past !== now) {
+            this.setTimer(60);
+        }
+        this.setTimer(1);
     }.on('init')
 });
