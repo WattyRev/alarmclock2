@@ -2,9 +2,9 @@
     {{#touch-to destination='index' class="nav fa fa-clock-o"}}{{/touch-to}}
     {{#touch-to destination='new' class="add-alarm fa fa-plus"}}{{/touch-to}}
 
-    <ul>
+    <ul class="alarms-list">
         {{#each model as |alarm|}}
-            {{alarm-item alarm=alarm}}
+            {{alarm-item alarm=alarm deleteAlarm='deleteAlarm'}}
         {{/each}}
     </ul>
 </div>

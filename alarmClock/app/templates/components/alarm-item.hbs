@@ -1,1 +1,15 @@
-{{alarm.hours}}:{{alarm.minutes}}
+<span>{{displayHours}}:{{displayMinutes}}{{ampm}}</span>
+<span class="days">
+    <span class="{{if alarm.selectedDays.sunday 'selected'}}">S</span>
+    <span class="{{if alarm.selectedDays.monday 'selected'}}">M</span>
+    <span class="{{if alarm.selectedDays.tuesday 'selected'}}">T</span>
+    <span class="{{if alarm.selectedDays.wednesday 'selected'}}">W</span>
+    <span class="{{if alarm.selectedDays.thursday 'selected'}}">T</span>
+    <span class="{{if alarm.selectedDays.friday 'selected'}}">F</span>
+    <span class="{{if alarm.selectedDays.saturday 'selected'}}">S</span>
+</span>
+<span class="button-group">
+    <button class="fa fa-power-off {{if alarm.isEnabled 'selected'}}" {{action 'toggleEnabled' on="touchStart"}}></button>
+    <button class="fa fa-pencil"></button>
+    <button class="fa fa-trash {{if isDeleting 'selected'}}" {{action 'delete' on="touchStart"}}></button>
+</span>
