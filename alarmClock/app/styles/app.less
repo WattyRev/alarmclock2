@@ -10,6 +10,10 @@ body, h1, h2, p {
     line-height: 100%;
     margin: 0;
 }
+a, a:hover, a:active {
+    color: @red;
+    text-decoration: none;
+}
 
 .background {
     position:fixed;
@@ -69,4 +73,27 @@ body, h1, h2, p {
     h2 {
         font-size: 3vw;
     }
+}
+
+.nav {
+    padding: 15px;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index: 10;
+}
+
+.manage-alarms {
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    background: rgba(255,255,255,.2);
+}
+.add-alarm  {
+    position:absolute;
+    top:0;
+    right: 0;
+    padding: 15px;
 }
