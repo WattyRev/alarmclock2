@@ -10,6 +10,9 @@ export default Ember.Route.extend({
             let service = this.get('alarms');
             service.get('alarms').removeAt(index);
             service.saveAlarms();
+        },
+        editAlarm(index) {
+            this.transitionTo('edit', index);
         }
     }
 });

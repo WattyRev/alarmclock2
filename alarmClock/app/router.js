@@ -8,7 +8,9 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('alarms');
   this.route('new');
-  this.route('edit');
+  this.route('edit', {
+      path: '/edit/:index'
+  });
 });
 
 export default Router;

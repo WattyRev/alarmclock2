@@ -5,8 +5,11 @@ export default Ember.Component.extend({
     classNames: ['alarm-item'],
     alarmsService: Ember.inject.service('alarms'),
 
+    index: function() {
+        return this.$().index();
+    }.property('alarm'),
+
     displayHours: function() {
-        console.log('calc hours');
         let hours = this.get('alarm.hours');
         if (hours > 12) {
             hours = hours - 12;
@@ -50,6 +53,10 @@ export default Ember.Component.extend({
                     self.set('isDeleting', false);
                 }, 500));
             }
+        },
+        edit() {
+            let index = this.$().index();
+            this.sendAction('editAlarm', index);
         }
     }
 });

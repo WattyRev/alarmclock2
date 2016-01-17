@@ -4,7 +4,7 @@
 
     <ul class="alarms-list">
         {{#each model as |alarm|}}
-            {{alarm-item alarm=alarm deleteAlarm='deleteAlarm'}}
+            {{alarm-item alarm=alarm deleteAlarm='deleteAlarm' editAlarm='editAlarm'}}
         {{/each}}
     </ul>
 </div>
