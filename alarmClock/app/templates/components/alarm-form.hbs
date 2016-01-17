@@ -1,1 +1,14 @@
-{{yield}}
+{{input type="text" value=time placeholder="06:00"}}
+<div class="button-group">
+    <button type="button" class="{{if selectedDays.sunday 'selected'}}" {{action 'toggleDay' 'sunday' on="touchStart"}}>Sunday</button>
+    <button type="button" class="{{if selectedDays.monday 'selected'}}" {{action 'toggleDay' 'monday' on="touchStart"}}>Monday</button>
+    <button type="button" class="{{if selectedDays.tuesday 'selected'}}" {{action 'toggleDay' 'tuesday' on="touchStart"}}>Tuesday</button>
+    <button type="button" class="{{if selectedDays.wednesday 'selected'}}" {{action 'toggleDay' 'wednesday' on="touchStart"}}>Wednesday</button>
+    <button type="button" class="{{if selectedDays.thursday 'selected'}}" {{action 'toggleDay' 'thursday' on="touchStart"}}>Thursday</button>
+    <button type="button" class="{{if selectedDays.friday 'selected'}}" {{action 'toggleDay' 'friday' on="touchStart"}}>Friday</button>
+    <button type="button" class="{{if selectedDays.saturday 'selected'}}" {{action 'toggleDay' 'saturday' on="touchStart"}}>Saturday</button>
+</div>
+<div class="action">
+    {{#touch-to destination='alarms' tagName="button"}}Cancel{{/touch-to}}
+    <button type="submit">Save</button>
+</div>

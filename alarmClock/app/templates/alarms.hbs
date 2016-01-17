@@ -1,4 +1,10 @@
 <div class="manage-alarms">
-    {{#link-to 'index' class="nav fa fa-clock-o"}}{{/link-to}}
-    <div class="add-alarm fa fa-plus"></div>
+    {{#touch-to destination='index' class="nav fa fa-clock-o"}}{{/touch-to}}
+    {{#touch-to destination='new' class="add-alarm fa fa-plus"}}{{/touch-to}}
+
+    <ul>
+        {{#each model as |alarm|}}
+            {{alarm-item alarm=alarm}}
+        {{/each}}
+    </ul>
 </div>
