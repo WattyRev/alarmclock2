@@ -1,7 +1,7 @@
 <?php
 // Copy and paste the results from `passgen` here
-$salt = '1577597200';
-$pass = 'a9b882455b798c8e0a08bc60c07a35d4';
+$salt = '433354546';
+$pass = '1ed01dbc90e114405bbd571c0af1a6d0';
 // End copy and paste
 // Defaults
 $projectName = 'alarm.wattydev.com'; // Your project name
