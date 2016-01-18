@@ -184,9 +184,59 @@ ul {
     .days {
         margin-left: 4vw;
         color: @black;
-        
+
         .selected {
             color: @red;
         }
     }
+}
+.alarm-control {
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+
+    .background {
+        position:absolute;
+        top:0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: @red;
+        animation-name: pulse;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+    .action {
+        height: 100%;
+        position:absolute;
+        top:0;
+        left:0;
+        width: 0%;
+        transition: .3s width linear;
+        background: rgba(255,255,255,.5);
+
+        &.touching {
+            transition: 5s width linear;
+            width: 100%;
+        }
+    }
+}
+
+@-webkit-keyframes pulse {
+    0% {opacity: 0;}
+    25% {opacity: .25;}
+    50% {opacity: .5;}
+    75% {opacity: .25;}
+    100% {opacity: 0;}
+}
+@keyframes pulse {
+    0% {opacity: 0;}
+    25% {opacity: .25;}
+    50% {opacity: .5;}
+    75% {opacity: .25;}
+    100% {opacity: 0;}
 }

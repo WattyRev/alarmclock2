@@ -40,6 +40,7 @@ export default Ember.Component.extend({
     actions: {
         toggleEnabled() {
             this.set('alarm.isEnabled', !this.get('alarm.isEnabled'));
+            this.get('alarmsService').saveAlarms();
         },
         delete() {
             let self = this;

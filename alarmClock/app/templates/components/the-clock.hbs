@@ -1,3 +1,9 @@
-<span class="next-alarm"><i class="fa fa-bell-o"></i>{{nextAlarm}}</span>
+{{#if snooze}}
+    <span class="next-alarm"><i class="fa fa-bell-o"></i>{{snooze}}</span>
+{{else}}
+    {{#if nextAlarm}}
+        <span class="next-alarm"><i class="fa fa-bell-o"></i>{{nextAlarm}}</span>
+    {{/if}}
+{{/if}}
 <h1>{{{time.time}}}</h1>
 <h2>{{time.date}}</h2>

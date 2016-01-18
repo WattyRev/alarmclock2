@@ -4,6 +4,8 @@ export default Ember.Service.extend({
     alarms: null,
     time: Ember.inject.service('time'),
 
+    snooze: null,
+
     nextAlarm: function() {
         let alarms = this.get('alarms');
         let time = this.get('time');
