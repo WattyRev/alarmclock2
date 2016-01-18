@@ -61,7 +61,8 @@ export default Ember.Service.extend({
         let now = this.get('now').getMinutes();
         if (past !== now) {
             this.setTimer(60);
+        } else {
+            this.setTimer(1);
         }
-        this.setTimer(1);
     }.on('init')
 });

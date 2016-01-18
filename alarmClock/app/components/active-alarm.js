@@ -23,7 +23,7 @@ export default Ember.Component.extend({
             return false;
         }
         let weekDays = this.get('timeService.weekDays');
-        let today = weekDays[now.getDay()];
+        let today = weekDays[now.getDay()].toLowerCase();
         let alarm = this.get('alarmsService.alarms').filter(function(value) {
             if (!value.isEnabled) {
                 return false;
@@ -55,6 +55,7 @@ export default Ember.Component.extend({
         }
         if (!alarming && playing) {
             sound.stop();
+            return;
         }
     }.observes('alarming'),
 
