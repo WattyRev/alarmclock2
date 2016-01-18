@@ -45,6 +45,19 @@ export default Ember.Component.extend({
         return true;
     }.property('timeService.now', 'stopped', 'doneSnoozing'),
 
+    toggleSound: function() {
+        let alarming = this.get('alarming');
+        let sound = this.get('soundService');
+        let playing = this.get('soundService.playing');
+        if (alarming && !playing) {
+            sound.play();
+            return;
+        }
+        if (!alarming && playing) {
+            sound.stop();
+        }
+    }.observes('alarming'),
+
     actions: {
         snooze() {
             let self = this;

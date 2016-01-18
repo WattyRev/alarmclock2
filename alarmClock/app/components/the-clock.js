@@ -9,8 +9,8 @@ export default Ember.Component.extend({
         if (!this.get('alarms.snooze')) {
             return '';
         }
-        let now = Math.round(this.get('time.now').getTime() / 60000);
-        let snooze = Math.round(this.get('alarms.snooze').getTime() / 60000);
+        let now = Math.ceil(this.get('time.now').getTime() / 60000);
+        let snooze = Math.ceil(this.get('alarms.snooze').getTime() / 60000);
         let remaining = (now - snooze - 10) * -1;
         return remaining + 'mins';
     }.property('alarms.snooze', 'time.now'),
