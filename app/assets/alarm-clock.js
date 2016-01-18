@@ -293,7 +293,7 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
 
         nextAlarm: (function () {
             var next = this.get('alarms.nextAlarm');
-            if (!next) {
+            if (!next.hours) {
                 return '';
             }
             var hours = next.hours > 12 ? next.hours - 12 : next.hours;
@@ -1941,7 +1941,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+3bbaf99c"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+088e7b97"});
 }
 
 /* jshint ignore:end */

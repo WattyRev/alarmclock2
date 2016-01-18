@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 
     nextAlarm: function() {
         let next = this.get('alarms.nextAlarm');
-        if (!next) {
+        if (!next.hours) {
             return '';
         }
         let hours = next.hours > 12 ? next.hours - 12 : next.hours;
