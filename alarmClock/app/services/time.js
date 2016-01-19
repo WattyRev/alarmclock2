@@ -1,8 +1,20 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+    /**
+     * The current time.
+     *
+     * @property time
+     * @type {DateTime}
+     */
     now: new Date(),
 
+    /**
+     * The current time displayed in hh:mm<small>a</small>.
+     *
+     * @property time
+     * @type {String}
+     */
     time: function() {
         let now = this.get('now'),
             hours = now.getHours(),
@@ -20,6 +32,12 @@ export default Ember.Service.extend({
         return hours + ':' + minutes + '<small>' + ampm + '</small>';
     }.property('now'),
 
+    /**
+     * The current date displayed as D, M d, Y.
+     *
+     * @property date
+     * @type {String}
+     */
     date: function() {
         let now = this.get('now'),
             weekDays = this.get('weekDays'),
@@ -32,8 +50,20 @@ export default Ember.Service.extend({
         return day + ', ' + month + ' ' + date + ', ' + year;
     }.property('now'),
 
+    /**
+     * The possible weekdays.
+     *
+     * @property weekDays
+     * @type {Array}
+     */
     weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
+    /**
+     * The possible month names.
+     *
+     * @property months
+     * @type {Array}
+     */
     months: [
         'January',
         'February',
@@ -48,6 +78,13 @@ export default Ember.Service.extend({
         'December'
     ],
 
+    /**
+     * Set a timer to set the time next.
+     *
+     * @method setTimer
+     * @param {Number} seconds The number of seconds to set the timer for.
+     * @return {Void}
+     */
     setTimer(seconds) {
         let self = this;
         Ember.run.later(function() {
@@ -55,6 +92,12 @@ export default Ember.Service.extend({
         }, seconds * 1000);
     },
 
+    /**
+     * Set the current time.
+     *
+     * @method setTime
+     * @return {Void}
+     */
     setTime: function() {
         let past = this.get('now').getMinutes();
         this.set('now', new Date());

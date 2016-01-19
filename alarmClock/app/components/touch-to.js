@@ -4,6 +4,7 @@ export default Ember.Component.extend({
     /**
      * Default tag name applied to the component.
      *
+     * @property tagName
      * @type {String}
      */
     tagName: 'a',
@@ -11,6 +12,7 @@ export default Ember.Component.extend({
     /**
      * When the touchStart event is sent from the component.
      *
+     * @method touchStart
      * @return {Void}
      */
     touchStart() {

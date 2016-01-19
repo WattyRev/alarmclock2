@@ -1,10 +1,30 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    /**
+     * The tag used for the Component.
+     *
+     * @property tagName
+     * @type {String}
+     */
     tagName: 'form',
 
+    /**
+     * The value of the time input.
+     * Expects a value of (N)N:NN.
+     * No validation because I don't care.
+     *
+     * @property time
+     * @type {String}
+     */
     time: null,
 
+    /**
+     * What days the user has selected to enable the alarm on.
+     *
+     * @property selectedDays
+     * @type {Object}
+     */
     selectedDays: {
         sunday: false,
         monday: true,
@@ -16,12 +36,24 @@ export default Ember.Component.extend({
     },
 
     actions: {
+        /**
+         * Toggle the selection of a given day.
+         *
+         * @method toggleDay
+         * @return {Void}
+         */
         toggleDay(dayName) {
             dayName = 'selectedDays.' + dayName;
             this.set(dayName, !this.get(dayName));
         }
     },
 
+    /**
+     * Check if a provided time is valid.
+     *
+     * @method isValidTime
+     * @return {Boolean}
+     */
     isValidTime() {
         let time = this.get('time');
         if (!time) {
@@ -40,6 +72,12 @@ export default Ember.Component.extend({
         return true;
     },
 
+    /**
+     * Sends submission to the parent context.
+     *
+     * @method sendSubmit
+     * @return {Void}
+     */
     sendSubmit() {
         let alarm = {};
 
@@ -52,6 +90,13 @@ export default Ember.Component.extend({
         this.sendAction('save', alarm);
     },
 
+    /**
+     * When the user submits the form.
+     *
+     * @method submit
+     * @param {Event} e submit event
+     * @return {Void}
+     */
     submit(e) {
         e.preventDefault();
         if (this.isValidTime()) {

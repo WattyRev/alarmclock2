@@ -1,10 +1,36 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    /**
+     * A list of classes applied to the component.
+     *
+     * @property classNames
+     * @type {Array}
+     */
+    classNames: ['clock'],
+
+    /**
+     * A container for the time service.
+     *
+     * @property time
+     * @type {Service}
+     */
     time: Ember.inject.service('time'),
-    classNames: 'clock',
+
+    /**
+     * A container for the alarms service.
+     *
+     * @property alarms
+     * @type {Service}
+     */
     alarms: Ember.inject.service('alarms'),
 
+    /**
+     * The amount of time remaining (minutes) in the current snooze.
+     *
+     * @property snooze
+     * @type {String}
+     */
     snooze: function() {
         if (!this.get('alarms.snooze')) {
             return '';
@@ -15,6 +41,12 @@ export default Ember.Component.extend({
         return remaining + 'mins';
     }.property('alarms.snooze', 'time.now'),
 
+    /**
+     * The next alarm that will go off in the next 24 hours.
+     *
+     * @property nextAlarm
+     * @type {String}
+     */
     nextAlarm: function() {
         let next = this.get('alarms.nextAlarm');
         if (!next || !next.hours) {

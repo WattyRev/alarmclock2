@@ -1,59 +1,98 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    /**
+     * The classes that are applied to the Component.
+     *
+     * @property classNames
+     * @type {array}
+     */
     classNames: ['active-alarm'],
 
+    /**
+     * A container for the time service.
+     *
+     * @property timeService
+     * @type {Service}
+     */
     timeService: Ember.inject.service('time'),
 
+    /**
+     * A container for the alarms service.
+     *
+     * @property alarmsService
+     * @type {Service}
+     */
     alarmsService: Ember.inject.service('alarms'),
 
+    /**
+     * A container for the sound service.
+     *
+     * @property soundService
+     * @type {Service}
+     */
     soundService: Ember.inject.service('sound'),
 
+    /**
+     * When the alarm was last stopped.
+     *
+     * @property stopped
+     * @type {DateTime}
+     */
     stopped: null,
 
+    /**
+     * If snoozing has completed.
+     *
+     * @property doneSnoozing
+     * @type {Boolean}
+     */
     doneSnoozing: false,
 
+    /**
+     * If the alarm should currently be activated.
+     *
+     * @property alarming
+     * @type {Boolean}
+     */
     alarming: function() {
-        console.log('evaluating alarming');
         let now = this.get('timeService.now');
         let stopped = this.get('stopped');
         if (this.get('doneSnoozing')) {
-            console.log('evaluating alarming: done snoozing. alarming.');
             return true;
         }
         if (stopped && stopped.getTime() + 61000 >= now.getTime()) {
-            console.log('evaluating alarming: alarm was stopped to recently. not alarming.');
             return false;
         }
         let weekDays = this.get('timeService.weekDays');
         let today = weekDays[now.getDay()].toLowerCase();
         let alarm = this.get('alarmsService.alarms').filter(function(value) {
             if (!value.isEnabled) {
-                console.log('evaluating alarming: alarm is not enabled');
                 return false;
             }
             if (!value.selectedDays[today]) {
-                console.log('evaluating alarming: alarm is not enabled today');
                 return false;
             }
             if (value.hours !== now.getHours()) {
-                console.log('evaluating alarming: alarm\'s hours don\'t match now');
                 return false;
             }
             if (value.minutes !== now.getMinutes()) {
-                console.log('evaluating alarming: alarm\'s minutes don\'t match now');
                 return false;
             }
             return true;
         });
         if (!alarm[0]) {
-            console.log('evaluating alarming: no relevant alarm. not alarming');
             return false;
         }
-        console.log('evaluating alarming: alarming!');
         return true;
-    }.property('timeService.now', 'stopped', 'doneSnoozing', 'alarmsService.snooze'),
+    }.property('timeService.now', 'stopped', 'doneSnoozing'),
 
+    /**
+     * Toggles the playing of the alarm sound.
+     *
+     * @method toggleSound
+     * @return {Void}
+     */
     toggleSound: function() {
         let alarming = this.get('alarming');
         let sound = this.get('soundService');
@@ -69,8 +108,13 @@ export default Ember.Component.extend({
     }.observes('alarming'),
 
     actions: {
+        /**
+         * Trigger snoozing.
+         *
+         * @method snooze
+         * @return {Void}
+         */
         snooze() {
-            console.log('snooze triggered');
             let self = this;
             self.set('doneSnoozing', false);
             let service = self.get('alarmsService');
@@ -82,6 +126,12 @@ export default Ember.Component.extend({
             }, 10 * 60 * 1000);
         },
 
+        /**
+         * Stop the alarm.
+         *
+         * @method stop
+         * @return {Void}
+         */
         stop() {
             this.set('doneSnoozing', false);
             this.set('stopped', this.get('timeService.now'));

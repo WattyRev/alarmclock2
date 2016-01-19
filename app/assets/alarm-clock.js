@@ -21,59 +21,98 @@ define('alarm-clock/app', ['exports', 'ember', 'ember/resolver', 'ember/load-ini
 });
 define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Component.extend({
+        /**
+         * The classes that are applied to the Component.
+         *
+         * @property classNames
+         * @type {array}
+         */
         classNames: ['active-alarm'],
 
+        /**
+         * A container for the time service.
+         *
+         * @property timeService
+         * @type {Service}
+         */
         timeService: _ember['default'].inject.service('time'),
 
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarmsService
+         * @type {Service}
+         */
         alarmsService: _ember['default'].inject.service('alarms'),
 
+        /**
+         * A container for the sound service.
+         *
+         * @property soundService
+         * @type {Service}
+         */
         soundService: _ember['default'].inject.service('sound'),
 
+        /**
+         * When the alarm was last stopped.
+         *
+         * @property stopped
+         * @type {DateTime}
+         */
         stopped: null,
 
+        /**
+         * If snoozing has completed.
+         *
+         * @property doneSnoozing
+         * @type {Boolean}
+         */
         doneSnoozing: false,
 
+        /**
+         * If the alarm should currently be activated.
+         *
+         * @property alarming
+         * @type {Boolean}
+         */
         alarming: (function () {
-            console.log('evaluating alarming');
             var now = this.get('timeService.now');
             var stopped = this.get('stopped');
             if (this.get('doneSnoozing')) {
-                console.log('evaluating alarming: done snoozing. alarming.');
                 return true;
             }
             if (stopped && stopped.getTime() + 61000 >= now.getTime()) {
-                console.log('evaluating alarming: alarm was stopped to recently. not alarming.');
                 return false;
             }
             var weekDays = this.get('timeService.weekDays');
             var today = weekDays[now.getDay()].toLowerCase();
             var alarm = this.get('alarmsService.alarms').filter(function (value) {
                 if (!value.isEnabled) {
-                    console.log('evaluating alarming: alarm is not enabled');
                     return false;
                 }
                 if (!value.selectedDays[today]) {
-                    console.log('evaluating alarming: alarm is not enabled today');
                     return false;
                 }
                 if (value.hours !== now.getHours()) {
-                    console.log('evaluating alarming: alarm\'s hours don\'t match now');
                     return false;
                 }
                 if (value.minutes !== now.getMinutes()) {
-                    console.log('evaluating alarming: alarm\'s minutes don\'t match now');
                     return false;
                 }
                 return true;
             });
             if (!alarm[0]) {
-                console.log('evaluating alarming: no relevant alarm. not alarming');
                 return false;
             }
-            console.log('evaluating alarming: alarming!');
             return true;
-        }).property('timeService.now', 'stopped', 'doneSnoozing', 'alarmsService.snooze'),
+        }).property('timeService.now', 'stopped', 'doneSnoozing'),
 
+        /**
+         * Toggles the playing of the alarm sound.
+         *
+         * @method toggleSound
+         * @return {Void}
+         */
         toggleSound: (function () {
             var alarming = this.get('alarming');
             var sound = this.get('soundService');
@@ -89,8 +128,13 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
         }).observes('alarming'),
 
         actions: {
+            /**
+             * Trigger snoozing.
+             *
+             * @method snooze
+             * @return {Void}
+             */
             snooze: function snooze() {
-                console.log('snooze triggered');
                 var self = this;
                 self.set('doneSnoozing', false);
                 var service = self.get('alarmsService');
@@ -102,6 +146,12 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
                 }, 10 * 60 * 1000);
             },
 
+            /**
+             * Stop the alarm.
+             *
+             * @method stop
+             * @return {Void}
+             */
             stop: function stop() {
                 this.set('doneSnoozing', false);
                 this.set('stopped', this.get('timeService.now'));
@@ -111,31 +161,60 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
 });
 define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Component.extend({
+        /**
+         * A list of classes applied to the component.
+         *
+         * @property classNames
+         * @type {Array}
+         */
         classNames: ['alarm-control'],
 
+        /**
+         * If the user is currently touching the screen.
+         *
+         * @property touching
+         * @type {Boolean}
+         */
         touching: false,
 
+        /**
+         * The timer for determining long and short press.
+         *
+         * @property touchTimer
+         * @type {Timer}
+         */
         touchTimer: null,
 
+        /**
+         * When the user begins touching the screen.
+         * Sends longPress after 5 seconds of touching.
+         *
+         * @method touchStart
+         * @return {Void}
+         */
         touchStart: function touchStart() {
             var self = this;
             self.set('touching', true);
             self.set('touchTimer', _ember['default'].run.later(function () {
                 if (!self.get('touching')) {
-                    console.log('timer ended, but the user is no longer touching the screen.');
                     return;
                 }
-                console.log('timer completed. Sending long press');
                 self.set('touching', false);
                 self.set('touchTimer', false);
                 self.sendAction('longPress');
             }, 5 * 1000));
         },
 
+        /**
+         * When the user stoppes touching the screen.
+         * Sends shortPress and cancels the touchTimer.
+         *
+         * @method touchEnd
+         * @return {Void}
+         */
         touchEnd: function touchEnd() {
             this.set('touching', false);
             if (this.get('touchTimer')) {
-                console.log('timer is running. cancelling timer and sending short press.');
                 _ember['default'].run.cancel(this.get('touchTimer'));
                 this.sendAction('shortPress');
             }
@@ -144,10 +223,30 @@ define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (e
 });
 define('alarm-clock/components/alarm-form', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Component.extend({
+        /**
+         * The tag used for the Component.
+         *
+         * @property tagName
+         * @type {String}
+         */
         tagName: 'form',
 
+        /**
+         * The value of the time input.
+         * Expects a value of (N)N:NN.
+         * No validation because I don't care.
+         *
+         * @property time
+         * @type {String}
+         */
         time: null,
 
+        /**
+         * What days the user has selected to enable the alarm on.
+         *
+         * @property selectedDays
+         * @type {Object}
+         */
         selectedDays: {
             sunday: false,
             monday: true,
@@ -159,12 +258,24 @@ define('alarm-clock/components/alarm-form', ['exports', 'ember'], function (expo
         },
 
         actions: {
+            /**
+             * Toggle the selection of a given day.
+             *
+             * @method toggleDay
+             * @return {Void}
+             */
             toggleDay: function toggleDay(dayName) {
                 dayName = 'selectedDays.' + dayName;
                 this.set(dayName, !this.get(dayName));
             }
         },
 
+        /**
+         * Check if a provided time is valid.
+         *
+         * @method isValidTime
+         * @return {Boolean}
+         */
         isValidTime: function isValidTime() {
             var time = this.get('time');
             if (!time) {
@@ -183,6 +294,12 @@ define('alarm-clock/components/alarm-form', ['exports', 'ember'], function (expo
             return true;
         },
 
+        /**
+         * Sends submission to the parent context.
+         *
+         * @method sendSubmit
+         * @return {Void}
+         */
         sendSubmit: function sendSubmit() {
             var alarm = {};
 
@@ -195,6 +312,13 @@ define('alarm-clock/components/alarm-form', ['exports', 'ember'], function (expo
             this.sendAction('save', alarm);
         },
 
+        /**
+         * When the user submits the form.
+         *
+         * @method submit
+         * @param {Event} e submit event
+         * @return {Void}
+         */
         submit: function submit(e) {
             e.preventDefault();
             if (this.isValidTime()) {
@@ -205,14 +329,46 @@ define('alarm-clock/components/alarm-form', ['exports', 'ember'], function (expo
 });
 define('alarm-clock/components/alarm-item', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Component.extend({
+        /**
+         * The tag name used for the component.
+         *
+         * @property tagName
+         * @type {String}
+         */
         tagName: 'li',
+
+        /**
+         * The class names applied to the component.
+         *
+         * @property classNames
+         * @type {Array}
+         */
         classNames: ['alarm-item'],
+
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarmsService
+         * @type {Service}
+         */
         alarmsService: _ember['default'].inject.service('alarms'),
 
+        /**
+         * The index of the current item.
+         *
+         * @property index
+         * @type {Number}
+         */
         index: (function () {
             return this.$().index();
         }).property('alarm'),
 
+        /**
+         * The hours that are displayed to the user.
+         *
+         * @property displayHours
+         * @type {Number}
+         */
         displayHours: (function () {
             var hours = this.get('alarm.hours');
             if (hours > 12) {
@@ -224,6 +380,12 @@ define('alarm-clock/components/alarm-item', ['exports', 'ember'], function (expo
             return hours;
         }).property('alarm.hours'),
 
+        /**
+         * The minutes that are displayed to the user.
+         *
+         * @property displayMinutes
+         * @type {String|Number}
+         */
         displayMinutes: (function () {
             var minutes = this.get('alarm.minutes');
             if (minutes < 10) {
@@ -232,6 +394,12 @@ define('alarm-clock/components/alarm-item', ['exports', 'ember'], function (expo
             return minutes;
         }).property('alarm.minutes'),
 
+        /**
+         * Displays AM or PM depending on the time.
+         *
+         * @property ampm
+         * @type {String}
+         */
         ampm: (function () {
             var hours = this.get('alarm.hours');
             var ampm = 'AM';
@@ -242,10 +410,23 @@ define('alarm-clock/components/alarm-item', ['exports', 'ember'], function (expo
         }).property('alarm.hours'),
 
         actions: {
+            /**
+             * Toggle if an alarm is enabled.
+             *
+             * @method toggleEnabled
+             * @return {Void}
+             */
             toggleEnabled: function toggleEnabled() {
                 this.set('alarm.isEnabled', !this.get('alarm.isEnabled'));
                 this.get('alarmsService').saveAlarms();
             },
+
+            /**
+             * Deletes an alarm.
+             *
+             * @method delete
+             * @return {Void}
+             */
             'delete': function _delete() {
                 var self = this;
                 if (self.get('isDeleting')) {
@@ -259,6 +440,13 @@ define('alarm-clock/components/alarm-item', ['exports', 'ember'], function (expo
                     }, 500));
                 }
             },
+
+            /**
+             * Go to the editing page for an alarm.
+             *
+             * @method edit
+             * @return {Void}
+             */
             edit: function edit() {
                 var index = this.$().index();
                 this.sendAction('editAlarm', index);
@@ -277,26 +465,80 @@ define('alarm-clock/components/app-version', ['exports', 'ember-cli-app-version/
   });
 });
 define('alarm-clock/components/prepare-alarm', ['exports', 'ember'], function (exports, _ember) {
-    exports['default'] = _ember['default'].Component.extend({
-        classNames: ['prepare-alarm'],
 
-        prepared: false,
+  // This file is here because iOS will not play audio unless it is initiated by
+  // a user interaction. This component forces the user to tap the screen, which
+  // plays and pauses the sound so that it can be played programatically later.
+  exports['default'] = _ember['default'].Component.extend({
+    /**
+     * A list of classes applied to the component.
+     *
+     * @property classNames
+     * @type {Array}
+     */
+    classNames: ['prepare-alarm'],
 
-        soundService: _ember['default'].inject.service('sound'),
+    /**
+     * If the audio is prepared.
+     *
+     * @property
+     * @type {}
+     */
+    prepared: false,
 
-        touchStart: function touchStart() {
-            var service = this.get('soundService');
-            service.prepare();
-            this.set('prepared', true);
-        }
-    });
+    /**
+     * A container for the sound service.
+     *
+     * @property soundService
+     * @type {Service}
+     */
+    soundService: _ember['default'].inject.service('sound'),
+
+    /**
+     * When the user touches the component.
+     *
+     * @method touchStart
+     * @return {Void}
+     */
+    touchStart: function touchStart() {
+      var service = this.get('soundService');
+      service.prepare();
+      this.set('prepared', true);
+    }
+  });
 });
 define('alarm-clock/components/the-clock', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Component.extend({
+        /**
+         * A list of classes applied to the component.
+         *
+         * @property classNames
+         * @type {Array}
+         */
+        classNames: ['clock'],
+
+        /**
+         * A container for the time service.
+         *
+         * @property time
+         * @type {Service}
+         */
         time: _ember['default'].inject.service('time'),
-        classNames: 'clock',
+
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarms
+         * @type {Service}
+         */
         alarms: _ember['default'].inject.service('alarms'),
 
+        /**
+         * The amount of time remaining (minutes) in the current snooze.
+         *
+         * @property snooze
+         * @type {String}
+         */
         snooze: (function () {
             if (!this.get('alarms.snooze')) {
                 return '';
@@ -307,6 +549,12 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
             return remaining + 'mins';
         }).property('alarms.snooze', 'time.now'),
 
+        /**
+         * The next alarm that will go off in the next 24 hours.
+         *
+         * @property nextAlarm
+         * @type {String}
+         */
         nextAlarm: (function () {
             var next = this.get('alarms.nextAlarm');
             if (!next || !next.hours) {
@@ -339,6 +587,7 @@ define('alarm-clock/components/touch-to', ['exports', 'ember'], function (export
     /**
      * Default tag name applied to the component.
      *
+     * @property tagName
      * @type {String}
      */
     tagName: 'a',
@@ -346,6 +595,7 @@ define('alarm-clock/components/touch-to', ['exports', 'ember'], function (export
     /**
      * When the touchStart event is sent from the component.
      *
+     * @method touchStart
      * @return {Void}
      */
     touchStart: function touchStart() {
@@ -419,16 +669,44 @@ define('alarm-clock/router', ['exports', 'ember', 'alarm-clock/config/environmen
 });
 define('alarm-clock/routes/alarms', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Route.extend({
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarms
+         * @type {Service}
+         */
         alarms: _ember['default'].inject.service('alarms'),
+
+        /**
+         * Generates the route's model.
+         *
+         * @method model
+         * @return {Array}
+         */
         model: function model() {
             return this.get('alarms.alarms');
         },
+
         actions: {
+            /**
+             * Delete an alarm.
+             *
+             * @method deleteAlarm
+             * @param {Number} index The index of the alarm to remove.
+             * @return {Void}
+             */
             deleteAlarm: function deleteAlarm(index) {
                 var service = this.get('alarms');
                 service.get('alarms').removeAt(index);
                 service.saveAlarms();
             },
+            /**
+             * Edit an alarm.
+             *
+             * @method editAlarm
+             * @param {Number} index The index of the alarm to edit.
+             * @return {Void}
+             */
             editAlarm: function editAlarm(index) {
                 this.transitionTo('edit', index);
             }
@@ -437,8 +715,21 @@ define('alarm-clock/routes/alarms', ['exports', 'ember'], function (exports, _em
 });
 define('alarm-clock/routes/edit', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Route.extend({
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarmsService
+         * @type {Service}
+         */
         alarmsService: _ember['default'].inject.service('alarms'),
 
+        /**
+         * Generates the model for the route.
+         *
+         * @method model
+         * @param {Object} params Dynamic urls parts.
+         * @return {Object}
+         */
         model: function model(params) {
             var alarm = this.get('alarmsService.alarms').objectAt(params.index);
             var time = alarm.hours + ':';
@@ -455,6 +746,13 @@ define('alarm-clock/routes/edit', ['exports', 'ember'], function (exports, _embe
         },
 
         actions: {
+            /**
+             * Save an alarm.
+             *
+             * @method saveAlarm
+             * @param {Object} alarm The alarm object to save.
+             * @return {Void}
+             */
             saveAlarm: function saveAlarm(alarm) {
                 var alarms = this.get('alarmsService.alarms');
                 var index = this.get('currentModel.index');
@@ -474,9 +772,22 @@ define('alarm-clock/routes/index', ['exports', 'ember'], function (exports, _emb
 });
 define('alarm-clock/routes/new', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Route.extend({
+        /**
+         * A container for the alarms service.
+         *
+         * @property alarms
+         * @type {Service}
+         */
         alarms: _ember['default'].inject.service('alarms'),
 
         actions: {
+            /**
+             * Creates a new alarming.
+             *
+             * @method createNewAlarm
+             * @param {Object} alarm The data to apply to the new alarm
+             * @return {Void}
+             */
             createNewAlarm: function createNewAlarm(alarm) {
                 var alarms = this.get('alarms.alarms');
                 alarm.isEnabled = true;
@@ -490,11 +801,36 @@ define('alarm-clock/routes/new', ['exports', 'ember'], function (exports, _ember
 });
 define('alarm-clock/services/alarms', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Service.extend({
+        /**
+         * The alarms.
+         *
+         * @property alarms
+         * @type {Array}
+         */
         alarms: null,
+
+        /**
+         * A container for the time service.
+         *
+         * @property time
+         * @type {Service}
+         */
         time: _ember['default'].inject.service('time'),
 
+        /**
+         * When snooze was started.
+         *
+         * @property snooze
+         * @type {DateTime}
+         */
         snooze: null,
 
+        /**
+         * The next alarm that will go off within 24 hours.
+         *
+         * @property nextAlarm
+         * @type {Object}
+         */
         nextAlarm: (function () {
             var alarms = this.get('alarms');
             var time = this.get('time');
@@ -556,10 +892,22 @@ define('alarm-clock/services/alarms', ['exports', 'ember'], function (exports, _
             return filtered[0];
         }).property('alarms', 'time.now'),
 
+        /**
+         * Save the alarms data to localStorage.
+         *
+         * @method saveAlarms
+         * @return {Void}
+         */
         saveAlarms: function saveAlarms() {
             localStorage.alarms = JSON.stringify(this.get('alarms'));
         },
 
+        /**
+         * Retrieve the alarms data from localStorage.
+         *
+         * @method getAlarms
+         * @return {Void}
+         */
         getAlarms: (function () {
             var alarms = localStorage.alarms ? JSON.parse(localStorage.alarms) : [];
             this.set('alarms', alarms);
@@ -569,8 +917,20 @@ define('alarm-clock/services/alarms', ['exports', 'ember'], function (exports, _
 });
 define('alarm-clock/services/sound', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Service.extend({
+        /**
+         * If the sound is currently playing.
+         *
+         * @property playing
+         * @type {Boolean}
+         */
         playing: false,
 
+        /**
+         * Prepare the audio. Necessary for iOS devices.
+         *
+         * @method prepare
+         * @return {Void}
+         */
         prepare: function prepare() {
             var self = this;
             self.play();
@@ -579,11 +939,23 @@ define('alarm-clock/services/sound', ['exports', 'ember'], function (exports, _e
             });
         },
 
+        /**
+         * Play the sound.
+         *
+         * @method play
+         * @return {Void}
+         */
         play: function play() {
             this.set('playing', true);
             _ember['default'].$('audio')[0].play();
         },
 
+        /**
+         * Pause and rewind the sound.
+         *
+         * @method stop
+         * @return {Void}
+         */
         stop: function stop() {
             this.set('playing', false);
             _ember['default'].$('audio')[0].pause();
@@ -593,8 +965,20 @@ define('alarm-clock/services/sound', ['exports', 'ember'], function (exports, _e
 });
 define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _ember) {
     exports['default'] = _ember['default'].Service.extend({
+        /**
+         * The current time.
+         *
+         * @property time
+         * @type {DateTime}
+         */
         now: new Date(),
 
+        /**
+         * The current time displayed in hh:mm<small>a</small>.
+         *
+         * @property time
+         * @type {String}
+         */
         time: (function () {
             var now = this.get('now'),
                 hours = now.getHours(),
@@ -612,6 +996,12 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
             return hours + ':' + minutes + '<small>' + ampm + '</small>';
         }).property('now'),
 
+        /**
+         * The current date displayed as D, M d, Y.
+         *
+         * @property date
+         * @type {String}
+         */
         date: (function () {
             var now = this.get('now'),
                 weekDays = this.get('weekDays'),
@@ -624,10 +1014,29 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
             return day + ', ' + month + ' ' + date + ', ' + year;
         }).property('now'),
 
+        /**
+         * The possible weekdays.
+         *
+         * @property weekDays
+         * @type {Array}
+         */
         weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
+        /**
+         * The possible month names.
+         *
+         * @property months
+         * @type {Array}
+         */
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'],
 
+        /**
+         * Set a timer to set the time next.
+         *
+         * @method setTimer
+         * @param {Number} seconds The number of seconds to set the timer for.
+         * @return {Void}
+         */
         setTimer: function setTimer(seconds) {
             var self = this;
             _ember['default'].run.later(function () {
@@ -635,6 +1044,12 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
             }, seconds * 1000);
         },
 
+        /**
+         * Set the current time.
+         *
+         * @method setTime
+         * @return {Void}
+         */
         setTime: (function () {
             var past = this.get('now').getMinutes();
             this.set('now', new Date());
@@ -965,7 +1380,7 @@ define("alarm-clock/templates/components/alarm-control", ["exports"], function (
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 3,
             "column": 0
           }
         },
@@ -978,14 +1393,10 @@ define("alarm-clock/templates/components/alarm-control", ["exports"], function (
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "background");
-        var el2 = dom.createTextNode("\n\n");
-        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
-        var el2 = dom.createTextNode("\n\n");
-        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -997,7 +1408,7 @@ define("alarm-clock/templates/components/alarm-control", ["exports"], function (
         morphs[0] = dom.createAttrMorph(element0, 'class');
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["action ", ["subexpr", "if", [["get", "touching", ["loc", [null, [4, 24], [4, 32]]]], "touching"], [], ["loc", [null, [4, 19], [4, 45]]]]]]]],
+      statements: [["attribute", "class", ["concat", ["action ", ["subexpr", "if", [["get", "touching", ["loc", [null, [2, 24], [2, 32]]]], "touching"], [], ["loc", [null, [2, 19], [2, 45]]]]]]]],
       locals: [],
       templates: []
     };
@@ -1957,7 +2368,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+545317cb"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+e5842599"});
 }
 
 /* jshint ignore:end */

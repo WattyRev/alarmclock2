@@ -1,11 +1,36 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+    /**
+     * The alarms.
+     *
+     * @property alarms
+     * @type {Array}
+     */
     alarms: null,
+
+    /**
+     * A container for the time service.
+     *
+     * @property time
+     * @type {Service}
+     */
     time: Ember.inject.service('time'),
 
+    /**
+     * When snooze was started.
+     *
+     * @property snooze
+     * @type {DateTime}
+     */
     snooze: null,
 
+    /**
+     * The next alarm that will go off within 24 hours.
+     *
+     * @property nextAlarm
+     * @type {Object}
+     */
     nextAlarm: function() {
         let alarms = this.get('alarms');
         let time = this.get('time');
@@ -67,10 +92,22 @@ export default Ember.Service.extend({
         return filtered[0];
     }.property('alarms', 'time.now'),
 
+    /**
+     * Save the alarms data to localStorage.
+     *
+     * @method saveAlarms
+     * @return {Void}
+     */
     saveAlarms: function() {
         localStorage.alarms = JSON.stringify(this.get('alarms'));
     },
 
+    /**
+     * Retrieve the alarms data from localStorage.
+     *
+     * @method getAlarms
+     * @return {Void}
+     */
     getAlarms: function() {
         let alarms = localStorage.alarms ? JSON.parse(localStorage.alarms) : [];
         this.set('alarms', alarms);
