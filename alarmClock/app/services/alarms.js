@@ -56,6 +56,9 @@ export default Ember.Service.extend({
             }
             if (selectedDays[today] && value.hours >= now.getHours()) {
                 if (value.hours === now.getHours()) {
+                    if (!now) {
+                        return true;
+                    }
                     return value.minutes > now.getMinutes();
                 } else {
                     return true;
@@ -63,6 +66,9 @@ export default Ember.Service.extend({
             }
             if (selectedDays[tomorrow] && value.hours <= now.getHours()) {
                 if (value.hours === now.getHours()) {
+                    if (!now) {
+                        return false;
+                    }
                     return value.minutes < now.getMinutes();
                 } else {
                     return true;

@@ -10,7 +10,9 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test"
+    "test": "ember test --server",
+    "test-integration": "ember test --server --filter \"Integration |\"",
+    "test-unit": "ember test --server --filter \"Unit |\""
   },
   "repository": "",
   "engines": {

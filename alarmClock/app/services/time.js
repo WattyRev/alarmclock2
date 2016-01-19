@@ -16,10 +16,14 @@ export default Ember.Service.extend({
      * @type {String}
      */
     time: function() {
-        let now = this.get('now'),
-            hours = now.getHours(),
-            minutes = now.getMinutes(),
-            ampm = hours > 11 ? 'PM' : 'AM';
+        let now = this.get('now');
+        let hours = 0;
+        let minutes = 0;
+        if (now) {
+            hours = now.getHours();
+            minutes = now.getMinutes();
+        }
+        let ampm = hours > 11 ? 'PM' : 'AM';
 
         if (hours > 12) {
             hours = hours - 12;
@@ -99,9 +103,14 @@ export default Ember.Service.extend({
      * @return {Void}
      */
     setTime: function() {
-        let past = this.get('now').getMinutes();
-        this.set('now', new Date());
-        let now = this.get('now').getMinutes();
+        let _now = this.get('now');
+        let past = 0;
+        let now = 0;
+        if (_now) {
+            past = _now.getMinutes();
+            now = _now.getMinutes();
+            this.set('now', new Date());
+        }
         if (past !== now) {
             this.setTimer(60);
         } else {
