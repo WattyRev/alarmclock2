@@ -61,35 +61,45 @@ ul {
 @-webkit-keyframes spin {
   0% {
     transform: rotateZ(0deg);
+    -webkit-transform: rotateZ(0deg);
   }
   25% {
     transform: rotateZ(90deg);
+    -webkit-transform: rotateZ(90deg);
   }
   50% {
     transform: rotateZ(180deg);
+    -webkit-transform: rotateZ(180deg);
   }
   75% {
     transform: rotateZ(270deg);
+    -webkit-transform: rotateZ(270deg);
   }
   100% {
     transform: rotateZ(360deg);
+    -webkit-transform: rotateZ(360deg);
   }
 }
 @keyframes spin {
   0% {
     transform: rotateZ(0deg);
+    -webkit-transform: rotateZ(0deg);
   }
   25% {
     transform: rotateZ(90deg);
+    -webkit-transform: rotateZ(90deg);
   }
   50% {
     transform: rotateZ(180deg);
+    -webkit-transform: rotateZ(180deg);
   }
   75% {
     transform: rotateZ(270deg);
+    -webkit-transform: rotateZ(270deg);
   }
   100% {
     transform: rotateZ(360deg);
+    -webkit-transform: rotateZ(360deg);
   }
 }
 .clock {
