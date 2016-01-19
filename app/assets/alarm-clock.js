@@ -34,36 +34,45 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
         doneSnoozing: false,
 
         alarming: (function () {
+            console.log('evaluating alarming');
             var now = this.get('timeService.now');
             var stopped = this.get('stopped');
             if (this.get('doneSnoozing')) {
+                console.log('evaluating alarming: done snoozing. alarming.');
                 return true;
             }
             if (stopped && stopped.getTime() + 61000 >= now.getTime()) {
+                console.log('evaluating alarming: alarm was stopped to recently. not alarming.');
                 return false;
             }
             var weekDays = this.get('timeService.weekDays');
             var today = weekDays[now.getDay()].toLowerCase();
             var alarm = this.get('alarmsService.alarms').filter(function (value) {
                 if (!value.isEnabled) {
+                    console.log('evaluating alarming: alarm is not enabled');
                     return false;
                 }
                 if (!value.selectedDays[today]) {
+                    console.log('evaluating alarming: alarm is not enabled today');
                     return false;
                 }
                 if (value.hours !== now.getHours()) {
+                    console.log('evaluating alarming: alarm\'s hours don\'t match now');
                     return false;
                 }
                 if (value.minutes !== now.getMinutes()) {
+                    console.log('evaluating alarming: alarm\'s minutes don\'t match now');
                     return false;
                 }
                 return true;
             });
             if (!alarm[0]) {
+                console.log('evaluating alarming: no relevant alarm. not alarming');
                 return false;
             }
+            console.log('evaluating alarming: alarming!');
             return true;
-        }).property('timeService.now', 'stopped', 'doneSnoozing'),
+        }).property('timeService.now', 'stopped', 'doneSnoozing', 'alarmsService.snooze'),
 
         toggleSound: (function () {
             var alarming = this.get('alarming');
@@ -81,10 +90,12 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
 
         actions: {
             snooze: function snooze() {
+                console.log('snooze triggered');
                 var self = this;
                 self.set('doneSnoozing', false);
                 var service = self.get('alarmsService');
                 service.set('snooze', self.get('timeService.now'));
+                self.set('stopped', this.get('timeService.now'));
                 _ember['default'].run.later(function () {
                     service.set('snooze', null);
                     self.set('doneSnoozing', true);
@@ -110,7 +121,11 @@ define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (e
             var self = this;
             self.set('touching', true);
             self.set('touchTimer', _ember['default'].run.later(function () {
-                console.log('run later');
+                if (!self.get('touching')) {
+                    console.log('timer ended, but the user is no longer touching the screen.');
+                    return;
+                }
+                console.log('timer completed. Sending long press');
                 self.set('touching', false);
                 self.set('touchTimer', false);
                 self.sendAction('longPress');
@@ -120,6 +135,7 @@ define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (e
         touchEnd: function touchEnd() {
             this.set('touching', false);
             if (this.get('touchTimer')) {
+                console.log('timer is running. cancelling timer and sending short press.');
                 _ember['default'].run.cancel(this.get('touchTimer'));
                 this.sendAction('shortPress');
             }
@@ -293,7 +309,7 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
 
         nextAlarm: (function () {
             var next = this.get('alarms.nextAlarm');
-            if (!next.hours) {
+            if (!next || !next.hours) {
                 return '';
             }
             var hours = next.hours > 12 ? next.hours - 12 : next.hours;
@@ -1941,7 +1957,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+6f8465ab"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+545317cb"});
 }
 
 /* jshint ignore:end */

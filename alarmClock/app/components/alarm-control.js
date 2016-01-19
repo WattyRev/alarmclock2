@@ -11,7 +11,11 @@ export default Ember.Component.extend({
         let self = this;
         self.set('touching', true);
         self.set('touchTimer', Ember.run.later(function() {
-            console.log('run later');
+            if (!self.get('touching')) {
+                console.log('timer ended, but the user is no longer touching the screen.');
+                return;
+            }
+            console.log('timer completed. Sending long press');
             self.set('touching', false);
             self.set('touchTimer', false);
             self.sendAction('longPress');
@@ -21,6 +25,7 @@ export default Ember.Component.extend({
     touchEnd() {
         this.set('touching', false);
         if (this.get('touchTimer')) {
+            console.log('timer is running. cancelling timer and sending short press.');
             Ember.run.cancel(this.get('touchTimer'));
             this.sendAction('shortPress');
         }
