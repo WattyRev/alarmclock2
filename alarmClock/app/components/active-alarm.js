@@ -98,6 +98,9 @@ export default Ember.Component.extend({
         let sound = this.get('soundService');
         let playing = this.get('soundService.playing');
         if (alarming && !playing) {
+            if (!sound) {
+                return;
+            }
             sound.play();
             return;
         }

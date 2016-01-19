@@ -1,5 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('active-alarm', 'Integration | Component | active alarm', {
   integration: true
@@ -109,7 +111,7 @@ test('it should not render if there is no relevant alarm', function(assert){
 
 test('it should not render if the alarm was stopped recently', function(assert){
     assert.expect(1);
-    
+
     this.set('timeService', timeService);
     this.set('alarmsService', alarmsService);
     this.set('stopped', {
@@ -121,39 +123,60 @@ test('it should not render if the alarm was stopped recently', function(assert){
     assert.equal(this.$('.alarm-control').length, 0);
 });
 
-//
-// test('the sound should play if the alarm is going off', function(assert){
-//
-// });
-//
-// test('the sound should not play if the alarm is not going off', function(assert){
-//
-// });
-//
-// test('triggering snooze stop the sound', function(assert){
-//
-// });
-//
-// test('triggering snooze should remove the content', function(assert){
-//
-// });
-//
-// test('triggering snooze should set snooze on the time service', function(assert){
-//
-// });
-//
-// test('when snooze runs out it should play the sound', function(assert){
-//
-// });
-//
-// test('when snooze runs out it should show the content.', function(assert){
-//
-// });
-//
-// test('triggering stop should stop the sound', function(assert){
-//
-// });
-//
-// test('triggering stop should remove the content', function(assert){
-//
-// });
+
+test('the sound should play if the alarm is going off', function(assert){
+    assert.expect(1);
+
+    var playing = false;
+    this.set('soundService', {
+        playing: false,
+        play: function() {
+            playing = true;
+        },
+        stop: function() {
+            playing = false;
+        }
+    });
+    this.set('alarming', false);
+
+    this.render(hbs`{{active-alarm soundService=soundService alarming=alarming}}`);
+
+    this.set('alarming', true);
+
+    return new Ember.RSVP.Promise(function(resolve) {
+        Ember.run.later(function() {
+            resolve();
+        }, 10);
+    }).then(function() {
+        assert.equal(playing, true);
+    });
+});
+
+test('the sound should not play if the alarm is not going off', function(assert){
+    assert.expect(1);
+
+    var playing = true;
+    this.set('soundService', {
+        playing: true,
+        play: function() {
+            console.log('play');
+            playing = true;
+        },
+        stop: function() {
+            playing = false;
+        }
+    });
+    this.set('alarming', true);
+
+    this.render(hbs`{{active-alarm soundService=soundService alarming=alarming}}`);
+
+    this.set('alarming', false);
+
+    return new Ember.RSVP.Promise(function(resolve) {
+        Ember.run.later(function() {
+            resolve();
+        }, 10);
+    }).then(function() {
+        assert.equal(playing, false);
+    });
+});
