@@ -1,5 +1,5 @@
 {{#if snooze}}
-    <span class="next-alarm"><i class="fa fa-bell-o"></i>{{snooze}}</span>
+    <span class="next-alarm"><i class="fa fa-bell-o"></i>{{snooze}}</span><i {{action 'cancelSnooze' on="touchStart"}} class="fa fa-close"></i>
 {{else}}
     {{#if nextAlarm}}
         <span class="next-alarm"><i class="fa fa-bell-o"></i>{{nextAlarm}}</span>

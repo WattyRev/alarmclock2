@@ -118,6 +118,9 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
             var sound = this.get('soundService');
             var playing = this.get('soundService.playing');
             if (alarming && !playing) {
+                if (!sound) {
+                    return;
+                }
                 sound.play();
                 return;
             }
@@ -568,7 +571,19 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
             var ampm = next.hours > 11 ? 'PM' : 'AM';
 
             return hours + ':' + minutes + ampm;
-        }).property('alarms.nextAlarm')
+        }).property('alarms.nextAlarm'),
+
+        actions: {
+            /**
+             * Cancel the snooze.
+             *
+             * @method cancelSnooze
+             * @return {Void}
+             */
+            cancelSnooze: function cancelSnooze() {
+                this.set('alarms.snooze', null);
+            }
+        }
     });
 });
 define('alarm-clock/components/the-rings', ['exports', 'ember'], function (exports, _ember) {
@@ -856,6 +871,9 @@ define('alarm-clock/services/alarms', ['exports', 'ember'], function (exports, _
                 }
                 if (selectedDays[today] && value.hours >= now.getHours()) {
                     if (value.hours === now.getHours()) {
+                        if (!now) {
+                            return true;
+                        }
                         return value.minutes > now.getMinutes();
                     } else {
                         return true;
@@ -863,6 +881,9 @@ define('alarm-clock/services/alarms', ['exports', 'ember'], function (exports, _
                 }
                 if (selectedDays[tomorrow] && value.hours <= now.getHours()) {
                     if (value.hours === now.getHours()) {
+                        if (!now) {
+                            return false;
+                        }
                         return value.minutes < now.getMinutes();
                     } else {
                         return true;
@@ -980,10 +1001,14 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
          * @type {String}
          */
         time: (function () {
-            var now = this.get('now'),
-                hours = now.getHours(),
-                minutes = now.getMinutes(),
-                ampm = hours > 11 ? 'PM' : 'AM';
+            var now = this.get('now');
+            var hours = 0;
+            var minutes = 0;
+            if (now) {
+                hours = now.getHours();
+                minutes = now.getMinutes();
+            }
+            var ampm = hours > 11 ? 'PM' : 'AM';
 
             if (hours > 12) {
                 hours = hours - 12;
@@ -1051,9 +1076,14 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
          * @return {Void}
          */
         setTime: (function () {
-            var past = this.get('now').getMinutes();
-            this.set('now', new Date());
-            var now = this.get('now').getMinutes();
+            var _now = this.get('now');
+            var past = 0;
+            var now = 0;
+            if (_now) {
+                past = _now.getMinutes();
+                now = _now.getMinutes();
+                this.set('now', new Date());
+            }
             if (past !== now) {
                 this.setTimer(60);
             } else {
@@ -1844,16 +1874,21 @@ define("alarm-clock/templates/components/the-clock", ["exports"], function (expo
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
+          var el1 = dom.createElement("i");
+          dom.setAttribute(el1, "class", "fa fa-close");
+          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
+          var element0 = dom.childAt(fragment, [2]);
+          var morphs = new Array(2);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
+          morphs[1] = dom.createElementMorph(element0);
           return morphs;
         },
-        statements: [["content", "snooze", ["loc", [null, [2, 57], [2, 67]]]]],
+        statements: [["content", "snooze", ["loc", [null, [2, 57], [2, 67]]]], ["element", "action", ["cancelSnooze"], ["on", "touchStart"], ["loc", [null, [2, 77], [2, 118]]]]],
         locals: [],
         templates: []
       };
@@ -2368,7 +2403,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+e5842599"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+ca099710"});
 }
 
 /* jshint ignore:end */

@@ -60,5 +60,17 @@ export default Ember.Component.extend({
         let ampm = next.hours > 11 ? 'PM' : 'AM';
 
         return hours + ':' + minutes + ampm;
-    }.property('alarms.nextAlarm')
+    }.property('alarms.nextAlarm'),
+
+    actions: {
+        /**
+         * Cancel the snooze.
+         *
+         * @method cancelSnooze
+         * @return {Void}
+         */
+        cancelSnooze() {
+            this.set('alarms.snooze', null);
+        }
+    }
 });

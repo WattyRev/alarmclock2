@@ -174,134 +174,612 @@ define('alarm-clock/tests/helpers/start-app.jshint', ['exports'], function (expo
     assert.ok(true, 'helpers/start-app.js should pass jshint.');
   });
 });
-define('alarm-clock/tests/integration/components/active-alarm-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+define('alarm-clock/tests/integration/components/active-alarm-test', ['exports', 'ember-qunit', 'ember', 'ember-test-helpers/wait'], function (exports, _emberQunit, _ember, _emberTestHelpersWait) {
 
-  (0, _emberQunit.moduleForComponent)('active-alarm', 'Integration | Component | active alarm', {
-    integration: true
-  });
+    (0, _emberQunit.moduleForComponent)('active-alarm', 'Integration | Component | active alarm', {
+        integration: true
+    });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
+    function copyObject(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+    var timeService = {
+        now: {
+            getDay: function getDay() {
+                return 0;
             },
-            'end': {
-              'line': 1,
-              'column': 16
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'active-alarm', ['loc', [null, [1, 0], [1, 16]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
+            getHours: function getHours() {
+                return 1;
             },
-            'end': {
-              'line': 5,
-              'column': 2
+            getMinutes: function getMinutes() {
+                return 2;
+            },
+            getTime: function getTime() {
+                return 100;
             }
-          }
         },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'active-alarm', [], [], 0, null, ['loc', [null, [2, 4], [4, 21]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
+        weekDays: ['Today']
+    };
+    var alarmsService = {
+        alarms: [{
+            isEnabled: true,
+            selectedDays: {
+                today: true
+            },
+            hours: 1,
+            minutes: 2
+        }]
+    };
 
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+    (0, _emberQunit.test)('it should render if the alarm is going off.', function (assert) {
+        assert.expect(1);
+        this.set('alarming', true);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 34
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['alarming', ['subexpr', '@mut', [['get', 'alarming', ['loc', [null, [1, 24], [1, 32]]]]], [], []]], ['loc', [null, [1, 0], [1, 34]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 1);
+    });
+
+    (0, _emberQunit.test)('it should not render if the alarm is not going off', function (assert) {
+        assert.expect(1);
+        this.set('alarming', false);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 34
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['alarming', ['subexpr', '@mut', [['get', 'alarming', ['loc', [null, [1, 24], [1, 32]]]]], [], []]], ['loc', [null, [1, 0], [1, 34]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+    });
+
+    (0, _emberQunit.test)('it should render if snoozing has completed', function (assert) {
+        assert.expect(1);
+        this.set('doneSnoozing', true);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 42
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['doneSnoozing', ['subexpr', '@mut', [['get', 'doneSnoozing', ['loc', [null, [1, 28], [1, 40]]]]], [], []]], ['loc', [null, [1, 0], [1, 42]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 1);
+    });
+
+    (0, _emberQunit.test)('it should render if there is an alarm for the current time.', function (assert) {
+        assert.expect(1);
+        this.set('timeService', timeService);
+        this.set('alarmsService', alarmsService);
+
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        assert.equal(this.$('.alarm-control').length, 1);
+    });
+
+    (0, _emberQunit.test)('it should not render if there is no relevant alarm', function (assert) {
+        assert.expect(5);
+
+        var alarms = copyObject(alarmsService);
+        alarms.alarms[0].isEnabled = false;
+        this.set('alarmsService', alarms);
+        this.set('timeService', timeService);
+
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+
+        alarms = copyObject(alarmsService);
+        alarms.alarms[0].selectedDays.today = false;
+        this.set('alarmsService', alarms);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+
+        alarms = copyObject(alarmsService);
+        alarms.alarms[0].hours = 5;
+        this.set('alarmsService', alarms);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+
+        alarms = copyObject(alarmsService);
+        alarms.alarms[0].minutes = 5;
+        this.set('alarmsService', alarms);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+
+        alarms = copyObject(alarmsService);
+        alarms.alarms = [];
+        this.set('alarmsService', alarms);
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 68
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []]], ['loc', [null, [1, 0], [1, 68]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+    });
+
+    (0, _emberQunit.test)('it should not render if the alarm was stopped recently', function (assert) {
+        assert.expect(1);
+
+        this.set('timeService', timeService);
+        this.set('alarmsService', alarmsService);
+        this.set('stopped', {
+            getTime: function getTime() {
+                return 0;
+            }
+        });
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 84
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['timeService', ['subexpr', '@mut', [['get', 'timeService', ['loc', [null, [1, 27], [1, 38]]]]], [], []], 'alarmsService', ['subexpr', '@mut', [['get', 'alarmsService', ['loc', [null, [1, 53], [1, 66]]]]], [], []], 'stopped', ['subexpr', '@mut', [['get', 'stopped', ['loc', [null, [1, 75], [1, 82]]]]], [], []]], ['loc', [null, [1, 0], [1, 84]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+        assert.equal(this.$('.alarm-control').length, 0);
+    });
+
+    (0, _emberQunit.test)('the sound should play if the alarm is going off', function (assert) {
+        assert.expect(1);
+
+        var playing = false;
+        this.set('soundService', {
+            playing: false,
+            play: function play() {
+                playing = true;
+            },
+            stop: function stop() {
+                playing = false;
+            }
+        });
+        this.set('alarming', false);
+
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 60
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['soundService', ['subexpr', '@mut', [['get', 'soundService', ['loc', [null, [1, 28], [1, 40]]]]], [], []], 'alarming', ['subexpr', '@mut', [['get', 'alarming', ['loc', [null, [1, 50], [1, 58]]]]], [], []]], ['loc', [null, [1, 0], [1, 60]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        this.set('alarming', true);
+
+        return new _ember['default'].RSVP.Promise(function (resolve) {
+            _ember['default'].run.later(function () {
+                resolve();
+            }, 10);
+        }).then(function () {
+            assert.equal(playing, true);
+        });
+    });
+
+    (0, _emberQunit.test)('the sound should not play if the alarm is not going off', function (assert) {
+        assert.expect(1);
+
+        var playing = true;
+        this.set('soundService', {
+            playing: true,
+            play: function play() {
+                console.log('play');
+                playing = true;
+            },
+            stop: function stop() {
+                playing = false;
+            }
+        });
+        this.set('alarming', true);
+
+        this.render(_ember['default'].HTMLBars.template((function () {
+            return {
+                meta: {
+                    'revision': 'Ember@1.13.10',
+                    'loc': {
+                        'source': null,
+                        'start': {
+                            'line': 1,
+                            'column': 0
+                        },
+                        'end': {
+                            'line': 1,
+                            'column': 60
+                        }
+                    }
+                },
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                    var el0 = dom.createDocumentFragment();
+                    var el1 = dom.createComment('');
+                    dom.appendChild(el0, el1);
+                    return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                    var morphs = new Array(1);
+                    morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+                    dom.insertBoundary(fragment, 0);
+                    dom.insertBoundary(fragment, null);
+                    return morphs;
+                },
+                statements: [['inline', 'active-alarm', [], ['soundService', ['subexpr', '@mut', [['get', 'soundService', ['loc', [null, [1, 28], [1, 40]]]]], [], []], 'alarming', ['subexpr', '@mut', [['get', 'alarming', ['loc', [null, [1, 50], [1, 58]]]]], [], []]], ['loc', [null, [1, 0], [1, 60]]]]],
+                locals: [],
+                templates: []
+            };
+        })()));
+
+        this.set('alarming', false);
+
+        return new _ember['default'].RSVP.Promise(function (resolve) {
+            _ember['default'].run.later(function () {
+                resolve();
+            }, 10);
+        }).then(function () {
+            assert.equal(playing, false);
+        });
+    });
 });
 define('alarm-clock/tests/integration/components/active-alarm-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -309,7 +787,7 @@ define('alarm-clock/tests/integration/components/active-alarm-test.jshint', ['ex
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/active-alarm-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/active-alarm-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/active-alarm-test.js should pass jshint.\nintegration/components/active-alarm-test.js: line 4, col 8, \'wait\' is defined but never used.\n\n1 error');
   });
 });
 define('alarm-clock/tests/integration/components/alarm-control-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -318,128 +796,24 @@ define('alarm-clock/tests/integration/components/alarm-control-test', ['exports'
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 17
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'alarm-control', ['loc', [null, [1, 0], [1, 17]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'alarm-control', [], [], 0, null, ['loc', [null, [2, 4], [4, 22]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{alarm-control}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#alarm-control}}
+  //       template block text
+  //     {{/alarm-control}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/alarm-control-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -447,7 +821,7 @@ define('alarm-clock/tests/integration/components/alarm-control-test.jshint', ['e
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/alarm-control-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/alarm-control-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/alarm-control-test.js should pass jshint.\nintegration/components/alarm-control-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-control-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/integration/components/alarm-form-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -456,128 +830,24 @@ define('alarm-clock/tests/integration/components/alarm-form-test', ['exports', '
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 14
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'alarm-form', ['loc', [null, [1, 0], [1, 14]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'alarm-form', [], [], 0, null, ['loc', [null, [2, 4], [4, 19]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{alarm-form}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#alarm-form}}
+  //       template block text
+  //     {{/alarm-form}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/alarm-form-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -585,7 +855,7 @@ define('alarm-clock/tests/integration/components/alarm-form-test.jshint', ['expo
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/alarm-form-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/alarm-form-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/alarm-form-test.js should pass jshint.\nintegration/components/alarm-form-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-form-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/integration/components/alarm-item-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -594,128 +864,24 @@ define('alarm-clock/tests/integration/components/alarm-item-test', ['exports', '
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 14
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'alarm-item', ['loc', [null, [1, 0], [1, 14]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'alarm-item', [], [], 0, null, ['loc', [null, [2, 4], [4, 19]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{alarm-item}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#alarm-item}}
+  //       template block text
+  //     {{/alarm-item}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/alarm-item-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -723,7 +889,7 @@ define('alarm-clock/tests/integration/components/alarm-item-test.jshint', ['expo
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/alarm-item-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/alarm-item-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/alarm-item-test.js should pass jshint.\nintegration/components/alarm-item-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-item-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/integration/components/prepare-alarm-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -732,128 +898,24 @@ define('alarm-clock/tests/integration/components/prepare-alarm-test', ['exports'
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 17
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'prepare-alarm', ['loc', [null, [1, 0], [1, 17]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'prepare-alarm', [], [], 0, null, ['loc', [null, [2, 4], [4, 22]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{prepare-alarm}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#prepare-alarm}}
+  //       template block text
+  //     {{/prepare-alarm}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/prepare-alarm-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -861,7 +923,7 @@ define('alarm-clock/tests/integration/components/prepare-alarm-test.jshint', ['e
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/prepare-alarm-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/prepare-alarm-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/prepare-alarm-test.js should pass jshint.\nintegration/components/prepare-alarm-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/prepare-alarm-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/integration/components/the-clock-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -870,128 +932,24 @@ define('alarm-clock/tests/integration/components/the-clock-test', ['exports', 'e
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 13
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'the-clock', ['loc', [null, [1, 0], [1, 13]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'the-clock', [], [], 0, null, ['loc', [null, [2, 4], [4, 18]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{the-clock}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#the-clock}}
+  //       template block text
+  //     {{/the-clock}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/the-clock-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -999,7 +957,7 @@ define('alarm-clock/tests/integration/components/the-clock-test.jshint', ['expor
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/the-clock-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/the-clock-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/the-clock-test.js should pass jshint.\nintegration/components/the-clock-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/the-clock-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/integration/components/the-rings-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -1008,128 +966,24 @@ define('alarm-clock/tests/integration/components/the-rings-test', ['exports', 'e
     integration: true
   });
 
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 13
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'the-rings', ['loc', [null, [1, 0], [1, 13]]]]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:" + EOL +
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@1.13.10',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@1.13.10',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'the-rings', [], [], 0, null, ['loc', [null, [2, 4], [4, 18]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
+  // test('it renders', function(assert) {
+  //
+  //   // Set any properties with this.set('myProperty', 'value');
+  //   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  //
+  //   this.render(hbs`{{the-rings}}`);
+  //
+  //   assert.equal(this.$().text().trim(), '');
+  //
+  //   // Template block usage:" + EOL +
+  //   this.render(hbs`
+  //     {{#the-rings}}
+  //       template block text
+  //     {{/the-rings}}
+  //   `);
+  //
+  //   assert.equal(this.$().text().trim(), 'template block text');
+  // });
 });
 define('alarm-clock/tests/integration/components/the-rings-test.jshint', ['exports'], function (exports) {
   'use strict';
@@ -1137,7 +991,7 @@ define('alarm-clock/tests/integration/components/the-rings-test.jshint', ['expor
   QUnit.module('JSHint - integration/components');
   QUnit.test('integration/components/the-rings-test.js should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'integration/components/the-rings-test.js should pass jshint.');
+    assert.ok(false, 'integration/components/the-rings-test.js should pass jshint.\nintegration/components/the-rings-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/the-rings-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
 });
 define('alarm-clock/tests/router.jshint', ['exports'], function (exports) {
