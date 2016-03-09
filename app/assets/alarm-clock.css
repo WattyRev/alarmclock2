@@ -26,6 +26,9 @@ audio {
   top: -10000px;
   left: -10000px;
 }
+body {
+  -webkit-overflow-scrolling: touch;
+}
 .button-group {
   display: flex;
   margin: 10px 0;
@@ -95,11 +98,12 @@ audio {
   position: absolute;
   top: 50%;
   width: 100%;
-  margin-top: -16vw;
+  margin-top: -21vw;
 }
 .clock h1 {
   font-weight: 300;
   font-size: 25vw;
+  margin-top: 3vw;
 }
 .clock h1 small {
   font-size: 10vw;
@@ -107,6 +111,10 @@ audio {
 }
 .clock h2 {
   font-size: 3vw;
+}
+.clock .fa-close {
+  padding: 0 10px;
+  z-index: 10;
 }
 .nav {
   padding: 15px;

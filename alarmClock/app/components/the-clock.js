@@ -70,6 +70,7 @@ export default Ember.Component.extend({
          * @return {Void}
          */
         cancelSnooze() {
+            console.log('cancel snooze');
             this.set('alarms.snooze', null);
         }
     }

@@ -27,7 +27,9 @@ audio {
     top:-10000px;
     left: -10000px;
 }
-
+body {
+    -webkit-overflow-scrolling: touch;
+}
 .button-group {
     display: flex;
     margin: 10px 0;
@@ -105,11 +107,12 @@ audio {
     position:absolute;
     top:50%;
     width: 100%;
-    margin-top: -16vw;
+    margin-top: -21vw;
 
     h1 {
         font-weight: 300;
         font-size: 25vw;
+        margin-top: 3vw;
 
         small {
             font-size: 10vw;
@@ -118,6 +121,10 @@ audio {
     }
     h2 {
         font-size: 3vw;
+    }
+    .fa-close {
+        padding: 0 10px;
+        z-index: 10;
     }
 }
 

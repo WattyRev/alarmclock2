@@ -581,6 +581,7 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
              * @return {Void}
              */
             cancelSnooze: function cancelSnooze() {
+                console.log('cancel snooze');
                 this.set('alarms.snooze', null);
             }
         }
@@ -1888,7 +1889,7 @@ define("alarm-clock/templates/components/the-clock", ["exports"], function (expo
           morphs[1] = dom.createElementMorph(element0);
           return morphs;
         },
-        statements: [["content", "snooze", ["loc", [null, [2, 57], [2, 67]]]], ["element", "action", ["cancelSnooze"], ["on", "touchStart"], ["loc", [null, [2, 77], [2, 118]]]]],
+        statements: [["content", "snooze", ["loc", [null, [2, 57], [2, 67]]]], ["element", "action", ["cancelSnooze"], [], ["loc", [null, [2, 77], [2, 102]]]]],
         locals: [],
         templates: []
       };
@@ -2403,7 +2404,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+ca099710"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+b7b8d6c7"});
 }
 
 /* jshint ignore:end */
