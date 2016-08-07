@@ -10,20 +10,34 @@ export default Ember.Component.extend({
     classNames: ['alarm-control'],
 
     /**
-     * If the user is currently touching the screen.
-     *
-     * @property touching
-     * @type {Boolean}
-     */
-    touching: false,
-
-    /**
      * The timer for determining long and short press.
      *
      * @property touchTimer
      * @type {Timer}
      */
     touchTimer: null,
+
+    /**
+     * The nunber of times the person has touched the control.
+     *
+     * @property touchCount
+     * @type {Number}
+     */
+    touchCount: 0,
+
+    /**
+     * The width percentage of the action display.
+     *
+     * @property widthPercent
+     * @type {String}
+     */
+    widthPercent: Ember.computed('touchCount', function () {
+        let count = this.get('touchCount');
+        if (!count) {
+            return 0;
+        }
+        return Math.floor(count / 3 * 100) + '%';
+    }),
 
     /**
      * When the user begins touching the screen.
@@ -33,30 +47,29 @@ export default Ember.Component.extend({
      * @return {Void}
      */
     touchStart() {
-        let self = this;
-        self.set('touching', true);
-        self.set('touchTimer', Ember.run.later(function() {
-            if (!self.get('touching')) {
-                return;
-            }
-            self.set('touching', false);
-            self.set('touchTimer', false);
-            self.sendAction('longPress');
-        }, 5 * 1000));
-    },
+        let count = this.get('touchCount');
 
-    /**
-     * When the user stoppes touching the screen.
-     * Sends shortPress and cancels the touchTimer.
-     *
-     * @method touchEnd
-     * @return {Void}
-     */
-    touchEnd() {
-        this.set('touching', false);
+        // Incriment the touch count
+        this.set('touchCount', count + 1);
+
+        // Cancel the timer if running
         if (this.get('touchTimer')) {
             Ember.run.cancel(this.get('touchTimer'));
-            this.sendAction('shortPress');
+
+            // If the user touched 3 times, stop the alarm and reset the count
+            if (count >=2) {
+                Ember.run.later(() => {
+                    this.sendAction('stopAlarm');
+                    this.set('touchCount', 0);
+                }, 150);
+                return;
+            }
         }
+
+        // After one second, if the user has not touched 3 or more times, snooze the alarm.
+        this.set('touchTimer', Ember.run.later(() => {
+            this.sendAction('snoozeAlarm');
+            this.set('touchCount', 0);
+        },  1000));
     }
 });

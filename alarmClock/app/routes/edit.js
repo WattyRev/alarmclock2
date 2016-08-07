@@ -48,7 +48,7 @@ export default Ember.Route.extend({
             alarms.push(alarm);
             this.set('alarmsService.alarms', alarms);
             this.get('alarmsService').saveAlarms();
-            this.transitionTo('alarms');
+            this.transitionToRoute('alarms');
         }
     }
 });

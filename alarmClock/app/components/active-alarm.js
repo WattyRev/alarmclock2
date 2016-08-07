@@ -55,7 +55,7 @@ export default Ember.Component.extend({
      * @property alarming
      * @type {Boolean}
      */
-    alarming: function() {
+    alarming: Ember.computed('timeService.now', 'stopped', 'doneSnoozing', function() {
         let now = this.get('timeService.now');
         let stopped = this.get('stopped');
         if (this.get('doneSnoozing')) {
@@ -85,7 +85,7 @@ export default Ember.Component.extend({
             return false;
         }
         return true;
-    }.property('timeService.now', 'stopped', 'doneSnoozing'),
+    }),
 
     /**
      * Toggles the playing of the alarm sound.

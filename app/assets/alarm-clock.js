@@ -75,7 +75,7 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
          * @property alarming
          * @type {Boolean}
          */
-        alarming: (function () {
+        alarming: _ember['default'].computed('timeService.now', 'stopped', 'doneSnoozing', function () {
             var now = this.get('timeService.now');
             var stopped = this.get('stopped');
             if (this.get('doneSnoozing')) {
@@ -105,7 +105,7 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
                 return false;
             }
             return true;
-        }).property('timeService.now', 'stopped', 'doneSnoozing'),
+        }),
 
         /**
          * Toggles the playing of the alarm sound.
@@ -173,20 +173,34 @@ define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (e
         classNames: ['alarm-control'],
 
         /**
-         * If the user is currently touching the screen.
-         *
-         * @property touching
-         * @type {Boolean}
-         */
-        touching: false,
-
-        /**
          * The timer for determining long and short press.
          *
          * @property touchTimer
          * @type {Timer}
          */
         touchTimer: null,
+
+        /**
+         * The nunber of times the person has touched the control.
+         *
+         * @property touchCount
+         * @type {Number}
+         */
+        touchCount: 0,
+
+        /**
+         * The width percentage of the action display.
+         *
+         * @property widthPercent
+         * @type {String}
+         */
+        widthPercent: _ember['default'].computed('touchCount', function () {
+            var count = this.get('touchCount');
+            if (!count) {
+                return 0;
+            }
+            return Math.floor(count / 3 * 100) + '%';
+        }),
 
         /**
          * When the user begins touching the screen.
@@ -196,31 +210,32 @@ define('alarm-clock/components/alarm-control', ['exports', 'ember'], function (e
          * @return {Void}
          */
         touchStart: function touchStart() {
-            var self = this;
-            self.set('touching', true);
-            self.set('touchTimer', _ember['default'].run.later(function () {
-                if (!self.get('touching')) {
-                    return;
-                }
-                self.set('touching', false);
-                self.set('touchTimer', false);
-                self.sendAction('longPress');
-            }, 5 * 1000));
-        },
+            var _this = this;
 
-        /**
-         * When the user stoppes touching the screen.
-         * Sends shortPress and cancels the touchTimer.
-         *
-         * @method touchEnd
-         * @return {Void}
-         */
-        touchEnd: function touchEnd() {
-            this.set('touching', false);
+            var count = this.get('touchCount');
+
+            // Incriment the touch count
+            this.set('touchCount', count + 1);
+
+            // Cancel the timer if running
             if (this.get('touchTimer')) {
                 _ember['default'].run.cancel(this.get('touchTimer'));
-                this.sendAction('shortPress');
+
+                // If the user touched 3 times, stop the alarm and reset the count
+                if (count >= 2) {
+                    _ember['default'].run.later(function () {
+                        _this.sendAction('stopAlarm');
+                        _this.set('touchCount', 0);
+                    }, 150);
+                    return;
+                }
             }
+
+            // After one second, if the user has not touched 3 or more times, snooze the alarm.
+            this.set('touchTimer', _ember['default'].run.later(function () {
+                _this.sendAction('snoozeAlarm');
+                _this.set('touchCount', 0);
+            }, 1000));
         }
     });
 });
@@ -581,7 +596,6 @@ define('alarm-clock/components/the-clock', ['exports', 'ember'], function (expor
              * @return {Void}
              */
             cancelSnooze: function cancelSnooze() {
-                console.log('cancel snooze');
                 this.set('alarms.snooze', null);
             }
         }
@@ -617,7 +631,7 @@ define('alarm-clock/components/touch-to', ['exports', 'ember'], function (export
     touchStart: function touchStart() {
       var context = this.container.lookup('controller:application');
       var destination = this.get('destination');
-      context.transitionTo(destination);
+      context.transitionToRoute(destination);
     }
   });
 });
@@ -724,7 +738,7 @@ define('alarm-clock/routes/alarms', ['exports', 'ember'], function (exports, _em
              * @return {Void}
              */
             editAlarm: function editAlarm(index) {
-                this.transitionTo('edit', index);
+                this.transitionToRoute('edit', index);
             }
         }
     });
@@ -778,7 +792,7 @@ define('alarm-clock/routes/edit', ['exports', 'ember'], function (exports, _embe
                 alarms.push(alarm);
                 this.set('alarmsService.alarms', alarms);
                 this.get('alarmsService').saveAlarms();
-                this.transitionTo('alarms');
+                this.transitionToRoute('alarms');
             }
         }
     });
@@ -810,7 +824,7 @@ define('alarm-clock/routes/new', ['exports', 'ember'], function (exports, _ember
                 alarms.push(alarm);
                 this.set('alarms.alarms', alarms);
                 this.get('alarms').saveAlarms();
-                this.transitionTo('alarms');
+                this.transitionToRoute('alarms');
             }
         }
     });
@@ -1356,7 +1370,7 @@ define("alarm-clock/templates/components/active-alarm", ["exports"], function (e
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [["inline", "alarm-control", [], ["shortPress", "snooze", "longPress", "stop"], ["loc", [null, [2, 4], [2, 58]]]]],
+        statements: [["inline", "alarm-control", [], ["snoozeAlarm", "snooze", "stopAlarm", "stop"], ["loc", [null, [2, 4], [2, 59]]]]],
         locals: [],
         templates: []
       };
@@ -1428,6 +1442,7 @@ define("alarm-clock/templates/components/alarm-control", ["exports"], function (
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "action");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -1436,10 +1451,10 @@ define("alarm-clock/templates/components/alarm-control", ["exports"], function (
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2]);
         var morphs = new Array(1);
-        morphs[0] = dom.createAttrMorph(element0, 'class');
+        morphs[0] = dom.createAttrMorph(element0, 'style');
         return morphs;
       },
-      statements: [["attribute", "class", ["concat", ["action ", ["subexpr", "if", [["get", "touching", ["loc", [null, [2, 24], [2, 32]]]], "touching"], [], ["loc", [null, [2, 19], [2, 45]]]]]]]],
+      statements: [["attribute", "style", ["concat", ["width: ", ["get", "widthPercent", ["loc", [null, [2, 36], [2, 48]]]], ";"]]]],
       locals: [],
       templates: []
     };
@@ -2404,7 +2419,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+b7b8d6c7"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+1682eebb"});
 }
 
 /* jshint ignore:end */

@@ -18,6 +18,6 @@ export default Ember.Component.extend({
     touchStart() {
         let context = this.container.lookup('controller:application');
         let destination = this.get('destination');
-        context.transitionTo(destination);
+        context.transitionToRoute(destination);
     }
 });
