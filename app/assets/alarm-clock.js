@@ -2419,7 +2419,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+1682eebb"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+67d892e6"});
 }
 
 /* jshint ignore:end */
