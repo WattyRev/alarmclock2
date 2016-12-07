@@ -31,7 +31,7 @@ export default Ember.Component.extend({
      * @property snooze
      * @type {String}
      */
-    snooze: function() {
+    snooze: function () {
         if (!this.get('alarms.snooze')) {
             return '';
         }
@@ -47,7 +47,7 @@ export default Ember.Component.extend({
      * @property nextAlarm
      * @type {String}
      */
-    nextAlarm: function() {
+    nextAlarm: function () {
         let next = this.get('alarms.nextAlarm');
         if (!next || !next.hours) {
             return '';

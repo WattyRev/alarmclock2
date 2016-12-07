@@ -15,7 +15,7 @@ export default Ember.Service.extend({
      * @property time
      * @type {String}
      */
-    time: function() {
+    time: function () {
         let now = this.get('now');
         let hours = 0;
         let minutes = 0;
@@ -42,14 +42,14 @@ export default Ember.Service.extend({
      * @property date
      * @type {String}
      */
-    date: function() {
-        let now = this.get('now'),
-            weekDays = this.get('weekDays'),
-            months = this.get('months'),
-            day = weekDays[now.getDay()],
-            month = months[now.getMonth()],
-            date = now.getDate(),
-            year = now.getFullYear();
+    date: function () {
+        let now = this.get('now');
+        let weekDays = this.get('weekDays');
+        let months = this.get('months');
+        let day = weekDays[now.getDay()];
+        let month = months[now.getMonth()];
+        let date = now.getDate();
+        let year = now.getFullYear();
 
         return day + ', ' + month + ' ' + date + ', ' + year;
     }.property('now'),
@@ -78,6 +78,7 @@ export default Ember.Service.extend({
         'July',
         'August',
         'September',
+        'October',
         'November',
         'December'
     ],
@@ -91,7 +92,7 @@ export default Ember.Service.extend({
      */
     setTimer(seconds) {
         let self = this;
-        Ember.run.later(function() {
+        Ember.run.later(function () {
             self.setTime();
         }, seconds * 1000);
     },
@@ -102,7 +103,7 @@ export default Ember.Service.extend({
      * @method setTime
      * @return {Void}
      */
-    setTime: function() {
+    setTime: function () {
         let _now = this.get('now');
         let past = 0;
         let now = 0;

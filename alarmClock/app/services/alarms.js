@@ -31,7 +31,7 @@ export default Ember.Service.extend({
      * @property nextAlarm
      * @type {Object}
      */
-    nextAlarm: function() {
+    nextAlarm: function () {
         let alarms = this.get('alarms');
         let time = this.get('time');
         let now = time.get('now');
@@ -45,7 +45,7 @@ export default Ember.Service.extend({
         if (!alarms.length) {
             return {};
         }
-        let filtered = alarms.filter(function(value) {
+        let filtered = alarms.filter(function (value) {
             let selectedDays = value.selectedDays;
 
             if (!value.isEnabled) {
@@ -75,7 +75,7 @@ export default Ember.Service.extend({
                 }
             }
         });
-        filtered.sort(function(a,b) {
+        filtered.sort(function (a,b) {
             if (a.selectedDays[today] && !b.selectedDays[today]) {
                 return 1;
             }
@@ -104,7 +104,7 @@ export default Ember.Service.extend({
      * @method saveAlarms
      * @return {Void}
      */
-    saveAlarms: function() {
+    saveAlarms: function () {
         localStorage.alarms = JSON.stringify(this.get('alarms'));
     },
 
@@ -114,9 +114,9 @@ export default Ember.Service.extend({
      * @method getAlarms
      * @return {Void}
      */
-    getAlarms: function() {
+    getAlarms: function () {
         let alarms = localStorage.alarms ? JSON.parse(localStorage.alarms) : [];
         this.set('alarms', alarms);
-    }.on('init'),
+    }.on('init')
 
 });

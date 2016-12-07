@@ -40,7 +40,7 @@ export default Ember.Route.extend({
          * @return {Void}
          */
         editAlarm(index) {
-            this.transitionToRoute('edit', index);
+            this.transitionTo('edit', index);
         }
     }
 });

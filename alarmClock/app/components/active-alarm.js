@@ -55,7 +55,7 @@ export default Ember.Component.extend({
      * @property alarming
      * @type {Boolean}
      */
-    alarming: Ember.computed('timeService.now', 'stopped', 'doneSnoozing', function() {
+    alarming: Ember.computed('timeService.now', 'stopped', 'doneSnoozing', function () {
         let now = this.get('timeService.now');
         let stopped = this.get('stopped');
         if (this.get('doneSnoozing')) {
@@ -66,7 +66,7 @@ export default Ember.Component.extend({
         }
         let weekDays = this.get('timeService.weekDays');
         let today = weekDays[now.getDay()].toLowerCase();
-        let alarm = this.get('alarmsService.alarms').filter(function(value) {
+        let alarm = this.get('alarmsService.alarms').filter(function (value) {
             if (!value.isEnabled) {
                 return false;
             }
@@ -93,7 +93,7 @@ export default Ember.Component.extend({
      * @method toggleSound
      * @return {Void}
      */
-    toggleSound: function() {
+    toggleSound: function () {
         let alarming = this.get('alarming');
         let sound = this.get('soundService');
         let playing = this.get('soundService.playing');
@@ -118,14 +118,16 @@ export default Ember.Component.extend({
          * @return {Void}
          */
         snooze() {
-            let self = this;
-            self.set('doneSnoozing', false);
-            let service = self.get('alarmsService');
-            service.set('snooze', self.get('timeService.now'));
-            self.set('stopped', this.get('timeService.now'));
-            Ember.run.later(function() {
+            this.set('doneSnoozing', false);
+            let service = this.get('alarmsService');
+            service.set('snooze', this.get('timeService.now'));
+            this.set('stopped', this.get('timeService.now'));
+            Ember.run.later(() => {
+                if (this.get('isDestroyed')) {
+                    return;
+                }
                 service.set('snooze', null);
-                self.set('doneSnoozing', true);
+                this.set('doneSnoozing', true);
             }, 10 * 60 * 1000);
         },
 

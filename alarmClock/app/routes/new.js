@@ -23,7 +23,7 @@ export default Ember.Route.extend({
             alarms.push(alarm);
             this.set('alarms.alarms', alarms);
             this.get('alarms').saveAlarms();
-            this.transitionToRoute('alarms');
+            this.transitionTo('alarms');
         }
     }
 });

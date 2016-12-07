@@ -57,7 +57,7 @@ export default Ember.Component.extend({
             Ember.run.cancel(this.get('touchTimer'));
 
             // If the user touched 3 times, stop the alarm and reset the count
-            if (count >=2) {
+            if (count >= 2) {
                 Ember.run.later(() => {
                     this.sendAction('stopAlarm');
                     this.set('touchCount', 0);

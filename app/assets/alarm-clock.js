@@ -138,14 +138,18 @@ define('alarm-clock/components/active-alarm', ['exports', 'ember'], function (ex
              * @return {Void}
              */
             snooze: function snooze() {
-                var self = this;
-                self.set('doneSnoozing', false);
-                var service = self.get('alarmsService');
-                service.set('snooze', self.get('timeService.now'));
-                self.set('stopped', this.get('timeService.now'));
+                var _this = this;
+
+                this.set('doneSnoozing', false);
+                var service = this.get('alarmsService');
+                service.set('snooze', this.get('timeService.now'));
+                this.set('stopped', this.get('timeService.now'));
                 _ember['default'].run.later(function () {
+                    if (_this.get('isDestroyed')) {
+                        return;
+                    }
                     service.set('snooze', null);
-                    self.set('doneSnoozing', true);
+                    _this.set('doneSnoozing', true);
                 }, 10 * 60 * 1000);
             },
 
@@ -631,7 +635,7 @@ define('alarm-clock/components/touch-to', ['exports', 'ember'], function (export
     touchStart: function touchStart() {
       var context = this.container.lookup('controller:application');
       var destination = this.get('destination');
-      context.transitionToRoute(destination);
+      context.transitionTo(destination);
     }
   });
 });
@@ -738,7 +742,7 @@ define('alarm-clock/routes/alarms', ['exports', 'ember'], function (exports, _em
              * @return {Void}
              */
             editAlarm: function editAlarm(index) {
-                this.transitionToRoute('edit', index);
+                this.transitionTo('edit', index);
             }
         }
     });
@@ -792,7 +796,7 @@ define('alarm-clock/routes/edit', ['exports', 'ember'], function (exports, _embe
                 alarms.push(alarm);
                 this.set('alarmsService.alarms', alarms);
                 this.get('alarmsService').saveAlarms();
-                this.transitionToRoute('alarms');
+                this.transitionTo('alarms');
             }
         }
     });
@@ -824,7 +828,7 @@ define('alarm-clock/routes/new', ['exports', 'ember'], function (exports, _ember
                 alarms.push(alarm);
                 this.set('alarms.alarms', alarms);
                 this.get('alarms').saveAlarms();
-                this.transitionToRoute('alarms');
+                this.transitionTo('alarms');
             }
         }
     });
@@ -1043,13 +1047,13 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
          * @type {String}
          */
         date: (function () {
-            var now = this.get('now'),
-                weekDays = this.get('weekDays'),
-                months = this.get('months'),
-                day = weekDays[now.getDay()],
-                month = months[now.getMonth()],
-                date = now.getDate(),
-                year = now.getFullYear();
+            var now = this.get('now');
+            var weekDays = this.get('weekDays');
+            var months = this.get('months');
+            var day = weekDays[now.getDay()];
+            var month = months[now.getMonth()];
+            var date = now.getDate();
+            var year = now.getFullYear();
 
             return day + ', ' + month + ' ' + date + ', ' + year;
         }).property('now'),
@@ -1068,7 +1072,7 @@ define('alarm-clock/services/time', ['exports', 'ember'], function (exports, _em
          * @property months
          * @type {Array}
          */
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'],
+        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
         /**
          * Set a timer to set the time next.
@@ -2419,7 +2423,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+67d892e6"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+a8672cd7"});
 }
 
 /* jshint ignore:end */
