@@ -1,8 +1,8 @@
 define('alarm-clock/tests/app.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - .');
-  QUnit.test('app.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - app.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'app.js should pass jshint.');
   });
@@ -10,8 +10,8 @@ define('alarm-clock/tests/app.jshint', ['exports'], function (exports) {
 define('alarm-clock/tests/components/active-alarm.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/active-alarm.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/active-alarm.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/active-alarm.js should pass jshint.');
   });
@@ -19,8 +19,8 @@ define('alarm-clock/tests/components/active-alarm.jshint', ['exports'], function
 define('alarm-clock/tests/components/alarm-control.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/alarm-control.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/alarm-control.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/alarm-control.js should pass jshint.');
   });
@@ -28,8 +28,8 @@ define('alarm-clock/tests/components/alarm-control.jshint', ['exports'], functio
 define('alarm-clock/tests/components/alarm-form.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/alarm-form.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/alarm-form.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/alarm-form.js should pass jshint.');
   });
@@ -37,8 +37,8 @@ define('alarm-clock/tests/components/alarm-form.jshint', ['exports'], function (
 define('alarm-clock/tests/components/alarm-item.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/alarm-item.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/alarm-item.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/alarm-item.js should pass jshint.');
   });
@@ -46,8 +46,8 @@ define('alarm-clock/tests/components/alarm-item.jshint', ['exports'], function (
 define('alarm-clock/tests/components/prepare-alarm.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/prepare-alarm.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/prepare-alarm.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/prepare-alarm.js should pass jshint.');
   });
@@ -55,8 +55,8 @@ define('alarm-clock/tests/components/prepare-alarm.jshint', ['exports'], functio
 define('alarm-clock/tests/components/the-clock.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/the-clock.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/the-clock.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/the-clock.js should pass jshint.');
   });
@@ -64,8 +64,8 @@ define('alarm-clock/tests/components/the-clock.jshint', ['exports'], function (e
 define('alarm-clock/tests/components/the-rings.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/the-rings.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/the-rings.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/the-rings.js should pass jshint.');
   });
@@ -73,8 +73,8 @@ define('alarm-clock/tests/components/the-rings.jshint', ['exports'], function (e
 define('alarm-clock/tests/components/touch-to.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - components');
-  QUnit.test('components/touch-to.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - components/touch-to.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/touch-to.js should pass jshint.');
   });
@@ -89,8 +89,8 @@ define('alarm-clock/tests/helpers/destroy-app', ['exports', 'ember'], function (
 define('alarm-clock/tests/helpers/destroy-app.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - helpers');
-  QUnit.test('helpers/destroy-app.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - helpers/destroy-app.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/destroy-app.js should pass jshint.');
   });
@@ -121,8 +121,8 @@ define('alarm-clock/tests/helpers/module-for-acceptance', ['exports', 'qunit', '
 define('alarm-clock/tests/helpers/module-for-acceptance.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - helpers');
-  QUnit.test('helpers/module-for-acceptance.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - helpers/module-for-acceptance.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/module-for-acceptance.js should pass jshint.');
   });
@@ -141,8 +141,8 @@ define('alarm-clock/tests/helpers/resolver', ['exports', 'ember/resolver', 'alar
 define('alarm-clock/tests/helpers/resolver.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - helpers');
-  QUnit.test('helpers/resolver.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - helpers/resolver.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/resolver.js should pass jshint.');
   });
@@ -168,8 +168,8 @@ define('alarm-clock/tests/helpers/start-app', ['exports', 'ember', 'alarm-clock/
 define('alarm-clock/tests/helpers/start-app.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - helpers');
-  QUnit.test('helpers/start-app.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - helpers/start-app.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass jshint.');
   });
@@ -784,8 +784,8 @@ define('alarm-clock/tests/integration/components/active-alarm-test', ['exports',
 define('alarm-clock/tests/integration/components/active-alarm-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/active-alarm-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/active-alarm-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/active-alarm-test.js should pass jshint.\nintegration/components/active-alarm-test.js: line 4, col 8, \'wait\' is defined but never used.\n\n1 error');
   });
@@ -818,8 +818,8 @@ define('alarm-clock/tests/integration/components/alarm-control-test', ['exports'
 define('alarm-clock/tests/integration/components/alarm-control-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/alarm-control-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/alarm-control-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/alarm-control-test.js should pass jshint.\nintegration/components/alarm-control-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-control-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -852,8 +852,8 @@ define('alarm-clock/tests/integration/components/alarm-form-test', ['exports', '
 define('alarm-clock/tests/integration/components/alarm-form-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/alarm-form-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/alarm-form-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/alarm-form-test.js should pass jshint.\nintegration/components/alarm-form-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-form-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -886,8 +886,8 @@ define('alarm-clock/tests/integration/components/alarm-item-test', ['exports', '
 define('alarm-clock/tests/integration/components/alarm-item-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/alarm-item-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/alarm-item-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/alarm-item-test.js should pass jshint.\nintegration/components/alarm-item-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/alarm-item-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -920,8 +920,8 @@ define('alarm-clock/tests/integration/components/prepare-alarm-test', ['exports'
 define('alarm-clock/tests/integration/components/prepare-alarm-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/prepare-alarm-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/prepare-alarm-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/prepare-alarm-test.js should pass jshint.\nintegration/components/prepare-alarm-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/prepare-alarm-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -954,8 +954,8 @@ define('alarm-clock/tests/integration/components/the-clock-test', ['exports', 'e
 define('alarm-clock/tests/integration/components/the-clock-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/the-clock-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/the-clock-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/the-clock-test.js should pass jshint.\nintegration/components/the-clock-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/the-clock-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -988,8 +988,8 @@ define('alarm-clock/tests/integration/components/the-rings-test', ['exports', 'e
 define('alarm-clock/tests/integration/components/the-rings-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - integration/components');
-  QUnit.test('integration/components/the-rings-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - integration/components/the-rings-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'integration/components/the-rings-test.js should pass jshint.\nintegration/components/the-rings-test.js: line 1, col 30, \'test\' is defined but never used.\nintegration/components/the-rings-test.js: line 2, col 8, \'hbs\' is defined but never used.\n\n2 errors');
   });
@@ -997,8 +997,8 @@ define('alarm-clock/tests/integration/components/the-rings-test.jshint', ['expor
 define('alarm-clock/tests/router.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - .');
-  QUnit.test('router.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - router.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'router.js should pass jshint.');
   });
@@ -1006,8 +1006,8 @@ define('alarm-clock/tests/router.jshint', ['exports'], function (exports) {
 define('alarm-clock/tests/routes/alarms.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - routes');
-  QUnit.test('routes/alarms.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - routes/alarms.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/alarms.js should pass jshint.');
   });
@@ -1015,8 +1015,8 @@ define('alarm-clock/tests/routes/alarms.jshint', ['exports'], function (exports)
 define('alarm-clock/tests/routes/edit.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - routes');
-  QUnit.test('routes/edit.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - routes/edit.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/edit.js should pass jshint.');
   });
@@ -1024,8 +1024,8 @@ define('alarm-clock/tests/routes/edit.jshint', ['exports'], function (exports) {
 define('alarm-clock/tests/routes/index.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - routes');
-  QUnit.test('routes/index.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - routes/index.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/index.js should pass jshint.');
   });
@@ -1033,8 +1033,8 @@ define('alarm-clock/tests/routes/index.jshint', ['exports'], function (exports) 
 define('alarm-clock/tests/routes/new.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - routes');
-  QUnit.test('routes/new.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - routes/new.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/new.js should pass jshint.');
   });
@@ -1042,8 +1042,8 @@ define('alarm-clock/tests/routes/new.jshint', ['exports'], function (exports) {
 define('alarm-clock/tests/services/alarms.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - services');
-  QUnit.test('services/alarms.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - services/alarms.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'services/alarms.js should pass jshint.');
   });
@@ -1051,8 +1051,8 @@ define('alarm-clock/tests/services/alarms.jshint', ['exports'], function (export
 define('alarm-clock/tests/services/sound.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - services');
-  QUnit.test('services/sound.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - services/sound.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'services/sound.js should pass jshint.');
   });
@@ -1060,8 +1060,8 @@ define('alarm-clock/tests/services/sound.jshint', ['exports'], function (exports
 define('alarm-clock/tests/services/time.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - services');
-  QUnit.test('services/time.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - services/time.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'services/time.js should pass jshint.');
   });
@@ -1073,8 +1073,8 @@ define('alarm-clock/tests/test-helper', ['exports', 'alarm-clock/tests/helpers/r
 define('alarm-clock/tests/test-helper.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - .');
-  QUnit.test('test-helper.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - test-helper.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'test-helper.js should pass jshint.');
   });
@@ -1094,8 +1094,8 @@ define('alarm-clock/tests/unit/routes/alarms-test', ['exports', 'ember-qunit'], 
 define('alarm-clock/tests/unit/routes/alarms-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/routes');
-  QUnit.test('unit/routes/alarms-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/routes/alarms-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/alarms-test.js should pass jshint.');
   });
@@ -1115,8 +1115,8 @@ define('alarm-clock/tests/unit/routes/edit-test', ['exports', 'ember-qunit'], fu
 define('alarm-clock/tests/unit/routes/edit-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/routes');
-  QUnit.test('unit/routes/edit-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/routes/edit-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/edit-test.js should pass jshint.');
   });
@@ -1136,8 +1136,8 @@ define('alarm-clock/tests/unit/routes/index-test', ['exports', 'ember-qunit'], f
 define('alarm-clock/tests/unit/routes/index-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/routes');
-  QUnit.test('unit/routes/index-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/routes/index-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/index-test.js should pass jshint.');
   });
@@ -1157,8 +1157,8 @@ define('alarm-clock/tests/unit/routes/new-test', ['exports', 'ember-qunit'], fun
 define('alarm-clock/tests/unit/routes/new-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/routes');
-  QUnit.test('unit/routes/new-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/routes/new-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/new-test.js should pass jshint.');
   });
@@ -1179,8 +1179,8 @@ define('alarm-clock/tests/unit/services/alarms-test', ['exports', 'ember-qunit']
 define('alarm-clock/tests/unit/services/alarms-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/services');
-  QUnit.test('unit/services/alarms-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/services/alarms-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/services/alarms-test.js should pass jshint.');
   });
@@ -1201,8 +1201,8 @@ define('alarm-clock/tests/unit/services/sound-test', ['exports', 'ember-qunit'],
 define('alarm-clock/tests/unit/services/sound-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/services');
-  QUnit.test('unit/services/sound-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/services/sound-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/services/sound-test.js should pass jshint.');
   });
@@ -1223,8 +1223,8 @@ define('alarm-clock/tests/unit/services/time-test', ['exports', 'ember-qunit'], 
 define('alarm-clock/tests/unit/services/time-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint - unit/services');
-  QUnit.test('unit/services/time-test.js should pass jshint', function (assert) {
+  QUnit.module('JSHint - unit/services/time-test.js');
+  QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/services/time-test.js should pass jshint.');
   });

@@ -657,6 +657,18 @@ define('alarm-clock/initializers/export-application-global', ['exports', 'ember'
   function initialize() {
     var application = arguments[1] || arguments[0];
     if (_alarmClockConfigEnvironment['default'].exportApplicationGlobal !== false) {
+      var theGlobal;
+      if (typeof window !== 'undefined') {
+        theGlobal = window;
+      } else if (typeof global !== 'undefined') {
+        theGlobal = global;
+      } else if (typeof self !== 'undefined') {
+        theGlobal = self;
+      } else {
+        // no reasonable global, just bail
+        return;
+      }
+
       var value = _alarmClockConfigEnvironment['default'].exportApplicationGlobal;
       var globalName;
 
@@ -666,13 +678,13 @@ define('alarm-clock/initializers/export-application-global', ['exports', 'ember'
         globalName = _ember['default'].String.classify(_alarmClockConfigEnvironment['default'].modulePrefix);
       }
 
-      if (!window[globalName]) {
-        window[globalName] = application;
+      if (!theGlobal[globalName]) {
+        theGlobal[globalName] = application;
 
         application.reopen({
           willDestroy: function willDestroy() {
             this._super.apply(this, arguments);
-            delete window[globalName];
+            delete theGlobal[globalName];
           }
         });
       }
@@ -2423,7 +2435,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+a8672cd7"});
+  require("alarm-clock/app")["default"].create({"name":"alarm-clock","version":"0.0.0+9494a691"});
 }
 
 /* jshint ignore:end */
